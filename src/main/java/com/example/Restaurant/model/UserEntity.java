@@ -25,9 +25,6 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "user_avatar", nullable = true)
-    private String userAvatar;
-
     @Column(name = "user_name", length = 45, nullable = false)
     private String userName;
 
@@ -64,14 +61,6 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     public Set<RoleEntity> getRoles() {
         return roles;
-    }
-
-    public String getUserAvatar() {
-        return userAvatar;
-    }
-
-    public void setUserAvatar(String userAvatar) {
-        this.userAvatar = userAvatar;
     }
 
     public void setUserName(String userName) {

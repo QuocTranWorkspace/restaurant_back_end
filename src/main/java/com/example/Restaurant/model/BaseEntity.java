@@ -18,12 +18,6 @@ public abstract class BaseEntity {
     @Column(name = "status")
     private Boolean status = Boolean.TRUE;
 
-    @Column(name = "created_by")
-    private Integer createdBy;
-
-    @Column(name = "updated_by")
-    private Integer updatedBy;
-
     @Column(name = "created_date")
     private Date createdDate;
 
@@ -44,22 +38,6 @@ public abstract class BaseEntity {
 
     public void setStatus(Boolean status) {
         this.status = status;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public int getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(int updatedBy) {
-        this.updatedBy = updatedBy;
     }
 
     public Date getCreatedDate() {
