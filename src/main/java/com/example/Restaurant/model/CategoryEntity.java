@@ -10,8 +10,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Table(name = "tbl_category")
 @Entity
+@Table(name = "tbl_category")
 public class CategoryEntity extends BaseEntity {
     @Column(name = "category_name")
     private String categoryName;

@@ -1,5 +1,5 @@
 INSERT INTO 
-    tbl_user (user_name, password, first_name, last_name, email)
+    tbl_user (userName, password, firstName, lastName, email)
 VALUES
     /* 
      * Admin credential

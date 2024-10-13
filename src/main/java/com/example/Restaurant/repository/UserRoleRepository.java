@@ -1,5 +1,6 @@
 package com.example.Restaurant.repository;
 
-public interface UserRoleRepository {
+import com.example.Restaurant.model.UserRole;
 
+public interface UserRoleRepository extends BaseRepository<UserRole> {
 }

@@ -1,13 +1,17 @@
 package com.example.Restaurant.model;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@Table(name = "tbl_order")
 @Entity
+@Table(name = "tbl_order")
 public class OrderEntity extends BaseEntity {
 
     @Column(name = "code")
@@ -27,6 +31,19 @@ public class OrderEntity extends BaseEntity {
 
     @Column(name = "customer_email")
     private String customerEmail;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
+    private Set<OrderProductEntity> orderProducts;
+
+    public void addOrderProduct(OrderProductEntity orderProduct) {
+        this.orderProducts.add(orderProduct);
+        orderProduct.setOrder(this);
+    }
+
+    public void deleteOrderProduct(OrderProductEntity orderProduct) {
+        this.orderProducts.remove(orderProduct);
+        orderProduct.setOrder(null);
+    }
 
     public String getCode() {
         return code;
@@ -74,5 +91,13 @@ public class OrderEntity extends BaseEntity {
 
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
+    }
+
+    public Set<OrderProductEntity> getOrderProducts() {
+        return orderProducts;
+    }
+
+    public void setOrderProducts(Set<OrderProductEntity> orderProducts) {
+        this.orderProducts = orderProducts;
     }
 }

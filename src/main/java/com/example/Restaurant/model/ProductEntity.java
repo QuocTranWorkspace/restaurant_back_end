@@ -9,8 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-@Table(name = "tbl_product")
 @Entity
+@Table(name = "tbl_product")
 public class ProductEntity extends BaseEntity {
     @Column(name = "avatar", nullable = true)
     private String avatar;

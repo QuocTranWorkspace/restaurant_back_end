@@ -1,5 +1,7 @@
 package com.example.Restaurant.repository;
 
-public interface OrderRepository {
+import com.example.Restaurant.model.OrderEntity;
 
+public interface OrderRepository extends BaseRepository<OrderEntity> {
+    OrderEntity findByCode(String code);
 }

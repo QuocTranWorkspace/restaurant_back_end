@@ -1,5 +1,7 @@
 package com.example.Restaurant.repository;
 
-public interface ProductRepository {
+import com.example.Restaurant.model.ProductEntity;
 
+public interface ProductRepository extends BaseRepository<ProductEntity> {
+    ProductEntity findByProductName(String productName);
 }
