@@ -15,13 +15,13 @@ VALUES
     ('non_admin', '$2a$04$yXPmiIaolFHbbl4zBZgepeBjrHdx4RDweIAu6bTp8oGSQdyzgjHiy', 'non_admin', 'non_admin', 'non_admin@example.com');
 
 INSERT INTO
-    tbl_role (role_name)
+    tbl_role (roleName)
 VALUES
     ('ADMIN'),
     ('USER');
 
 INSERT INTO
-    tbl_user_role (user_id, role_id)
+    tbl_user_role (userID, roleID)
 VALUES
     (1, 1),
     (2, 2);

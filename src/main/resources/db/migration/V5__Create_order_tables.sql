@@ -17,6 +17,6 @@ CREATE TABLE tbl_order_product (
     CONSTRAINT fk_order_product FOREIGN KEY (orderID) REFERENCES tbl_order(id),
     CONSTRAINT fk_product_order FOREIGN KEY (productID) REFERENCES tbl_product(id),
     status TINYINT(1) DEFAULT 1,
-    createdDate DATETIME CURRENT_TIMESTAMP,
+    createdDate DATETIME DEFAULT CURRENT_TIMESTAMP,
     updatedDate DATETIME
 );
