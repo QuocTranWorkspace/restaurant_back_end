@@ -15,6 +15,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tbl_role")
 public class RoleEntity extends BaseEntity implements GrantedAuthority {
+
     @Column(name = "role_name", length = 45, nullable = false)
     private String roleName;
 

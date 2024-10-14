@@ -22,4 +22,5 @@ public class UserService extends BaseService<UserEntity> {
     public UserEntity findByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
+
 }

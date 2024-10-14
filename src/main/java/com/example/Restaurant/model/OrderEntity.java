@@ -100,4 +100,5 @@ public class OrderEntity extends BaseEntity {
     public void setOrderProducts(Set<OrderProductEntity> orderProducts) {
         this.orderProducts = orderProducts;
     }
+
 }

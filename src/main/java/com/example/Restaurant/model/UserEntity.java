@@ -22,6 +22,7 @@ import jakarta.validation.constraints.Email;
 @Entity
 @Table(name = "tbl_user")
 public class UserEntity extends BaseEntity implements UserDetails {
+
     @Serial
     private static final long serialVersionUID = 1L;
 

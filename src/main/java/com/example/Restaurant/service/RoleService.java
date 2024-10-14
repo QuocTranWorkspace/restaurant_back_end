@@ -22,4 +22,5 @@ public class RoleService extends BaseService<RoleEntity> {
     public RoleEntity findByRoleName(String rolename) {
         return roleRepository.findByRoleName(rolename);
     }
+
 }

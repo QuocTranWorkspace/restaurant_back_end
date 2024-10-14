@@ -132,4 +132,5 @@ public abstract class BaseService<E extends BaseEntity> {
 
         return result;
     }
+
 }

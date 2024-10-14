@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tbl_category")
 public class CategoryEntity extends BaseEntity {
+
     @Column(name = "category_name")
     private String categoryName;
 
@@ -55,4 +56,5 @@ public class CategoryEntity extends BaseEntity {
     public void setProducts(Set<ProductEntity> products) {
         this.products = products;
     }
+
 }

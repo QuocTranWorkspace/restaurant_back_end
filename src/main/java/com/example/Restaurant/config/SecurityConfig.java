@@ -17,6 +17,7 @@ import com.example.Restaurant.service.UserDetailServiceImpl;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -68,4 +69,5 @@ public class SecurityConfig {
                 .userDetailsService(userDetailService)
                 .passwordEncoder(passwordEncoder());
     }
+
 }
