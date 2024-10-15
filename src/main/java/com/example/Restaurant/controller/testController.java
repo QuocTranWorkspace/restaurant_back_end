@@ -12,10 +12,16 @@ import jakarta.servlet.http.HttpServletResponse;
 @Controller
 public class testController {
 
-    @GetMapping({ "/", "/hello" })
+    @GetMapping({ "/", "/home" })
     public String res(final Model model, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         return "user/index";
+    }
+
+    @GetMapping({ "/home1" })
+    public String res1(final Model model, final HttpServletRequest request, final HttpServletResponse response)
+            throws IOException {
+        return "user/index1";
     }
 
     @GetMapping({ "admin/hello" })
