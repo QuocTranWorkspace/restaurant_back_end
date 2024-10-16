@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>DashBoard</title>
+    
+    <!-- CoreUI for Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/admin/css/coreui.min.css}" integrity="sha384-lBISJVJ49zh34fnUuAaSAyuYzQ2ioGvhm4As4Z1JFde0kVpaC1FFWD3f9adpZrdD" crossorigin="anonymous">
+
+    <!-- CoreUI for Bootstrap Bundle with Popper -->
+    <script type="text/javascript" th:src="@{/adminjs/coreui.bundle.min.js}" integrity="sha384-yoEOGIfJg9mO8eOS9dgSYBXwb2hCCE+AMiJYavhAofzm8AoyVE241kjON695K1v5" crossorigin="anonymous"></script>
 </head>
 <body>
     <h1>Hello Admin</h1>
