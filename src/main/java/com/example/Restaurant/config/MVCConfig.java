@@ -7,11 +7,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
@@ -20,7 +17,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 @Configuration
 @EnableWebMvc
 @ComponentScan
-public class MVCConfig implements WebMvcConfigurer, ApplicationContextAware {
+public class MVCConfig implements ApplicationContextAware {
 
     private ApplicationContext applicationContext;
 
@@ -40,36 +37,11 @@ public class MVCConfig implements WebMvcConfigurer, ApplicationContextAware {
     /* Static Resources, i18n Messages, Formatters (Conversion Service) */
     /* ******************************************************************* */
 
-    @SuppressWarnings("null")
-    @Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        /*
-         * Any requests url contains: http://localhost:8080/css/** will invoke folder
-         * classpath: = /src/main/resources
-         */
-        // src/main/resources/static css
-        registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
-
-        // Any requests url contains: http://localhost:8080/js/** will invoke folder
-        // src/main/resources/static/js
-        registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
-
-        // Any requests url contains: http://localhost:8080/img/** will invoke folder
-        // src/main/resources/static/img
-        registry.addResourceHandler("/img/**").addResourceLocations("classpath:/static/img/");
-    }
-
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasename("Messages");
         return messageSource;
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public void addFormatters(final FormatterRegistry registry) {
-        registry.addFormatter(dateFormatter());
     }
 
     @Bean
