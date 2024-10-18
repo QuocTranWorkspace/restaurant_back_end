@@ -2,17 +2,12 @@ package com.example.Restaurant.config;
 
 import java.io.IOException;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.Restaurant.model.UserEntity;
 import com.example.Restaurant.utils.JwtUtil;
 
 import jakarta.servlet.FilterChain;
@@ -36,17 +31,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String authorizationHeader = request.getHeader("Authorization");
 
+        System.out.println("Your header is blabla: " + authorizationHeader);
+
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String token = authorizationHeader.substring(7);
+            System.out.println("Your token is blabla: " + token);
             String username = jwtUtil.extractUsername(token);
+            System.out.println("Your username is blabla: " + username);
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                System.out.println("Your userDetails is blabla: " + userDetails);
 
                 if (jwtUtil.validateToken(token, userDetails)) {
                     var authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                    System.out.println(
+                            "Your principle is blabla: "
+                                    + (SecurityContextHolder.getContext().getAuthentication()
+                                            .getPrincipal() instanceof UserDetails));
                 }
             }
         }

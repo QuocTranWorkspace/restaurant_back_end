@@ -4,7 +4,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
-import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,60 +19,53 @@ import com.example.Restaurant.utils.JwtUtil;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(crsf -> crsf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        // Allow all requests to home view
-                        .requestMatchers("/**").permitAll()
-                        // Allow all static resources requests
-                        .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
-                        .permitAll())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailService),
-                        UsernamePasswordAuthenticationFilter.class)
-                // Others requests requires to be authenticated
-                .formLogin(withDefaults())
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/home")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID"))
-                .build();
-    }
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                return http
+                                .csrf(crsf -> crsf.disable())
+                                .authorizeHttpRequests(auth -> auth
+                                                // Allow all requests to home view
+                                                .requestMatchers("/**").permitAll()
+                                                // Allow all static resources requests
+                                                .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
+                                                .permitAll())
+                                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailService),
+                                                UsernamePasswordAuthenticationFilter.class)
+                                .build();
+        }
 
-    /*
-     * Spring will automatically wire the dependencies if there is only one
-     * constructor in the class.
-     * This is often preferred because it makes the dependency explicit and avoids
-     * some of the issues that can arise with field injection.
-     */
-    private final UserDetailServiceImpl userDetailService;
-    private final JwtUtil jwtUtil;
+        /*
+         * Spring will automatically wire the dependencies if there is only one
+         * constructor in the class.
+         * This is often preferred because it makes the dependency explicit and avoids
+         * some of the issues that can arise with field injection.
+         */
+        private final UserDetailServiceImpl userDetailService;
+        private final JwtUtil jwtUtil;
 
-    // @Autowired
-    public SecurityConfig(@Lazy UserDetailServiceImpl userDetailService, JwtUtil jwtUtil) {
-        this.userDetailService = userDetailService;
-        this.jwtUtil = jwtUtil;
-    }
+        // @Autowired
+        public SecurityConfig(@Lazy UserDetailServiceImpl userDetailService, JwtUtil jwtUtil) {
+                this.userDetailService = userDetailService;
+                this.jwtUtil = jwtUtil;
+        }
 
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(4);
-    }
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder(4);
+        }
 
-    /**
-     * Service configuration and password encode algorithm
-     *
-     * @param auth auth
-     * @throws Exception e
-     */
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http
-                .getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailService)
-                .passwordEncoder(passwordEncoder());
-        return authenticationManagerBuilder.build();
-    }
+        /**
+         * Service configuration and password encode algorithm
+         *
+         * @param auth auth
+         * @throws Exception e
+         */
+        @Bean
+        public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+                AuthenticationManagerBuilder authenticationManagerBuilder = http
+                                .getSharedObject(AuthenticationManagerBuilder.class);
+                authenticationManagerBuilder.userDetailsService(userDetailService)
+                                .passwordEncoder(passwordEncoder());
+                return authenticationManagerBuilder.build();
+        }
 
 }

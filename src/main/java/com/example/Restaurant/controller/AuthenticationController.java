@@ -6,7 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,6 @@ import com.example.Restaurant.utils.JwtUtil;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
 public class AuthenticationController {
 
     private final UserService userService;
@@ -46,22 +47,33 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<String> loginUser(@RequestBody LoginDTO reqUser) {
         try {
+            UserEntity user = userService.findByUserName(reqUser.getUsername());
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(reqUser.getUsername(),
-                            reqUser.getPassword()));
+                            reqUser.getPassword(), user.getAuthorities()));
+
+            String token = jwtUtil.generateToken(user); // Generate token
+
+            return ResponseEntity.ok(token); // Send token in the response body
+
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
-
-        UserEntity user = userService.findByUserName(reqUser.getUsername());
-        String token = jwtUtil.generateToken(user); // Generate token
-
-        return ResponseEntity.ok(token); // Send token in the response body
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/userAuthenticated")
+    public UserEntity getMethodName() {
+        Object userAuthenticated = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(userAuthenticated);
+        if (userAuthenticated instanceof UserDetails) {
+            return (UserEntity) userAuthenticated;
+        }
+        return new UserEntity();
     }
 
 }
