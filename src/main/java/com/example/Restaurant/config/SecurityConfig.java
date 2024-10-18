@@ -23,7 +23,7 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(auth -> auth
                         // Allow all requests to home view
-                        .requestMatchers("/", "/home", "/home1").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
                         // Allow all static resources requests
                         .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
                         .permitAll()
