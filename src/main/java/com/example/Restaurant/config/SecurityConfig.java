@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.example.Restaurant.service.UserDetailServiceImpl;
-import com.example.Restaurant.utils.JwtUtil;
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +21,6 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // Allow all requests to home view
                         .requestMatchers("/", "/home", "/home1").permitAll()
@@ -34,7 +31,6 @@ public class SecurityConfig {
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         // Others requests requires to be authenticated
                         .anyRequest().authenticated())
-                .addFilter(new JwtAuthenticationFilter(auth, jwtUtil))
                 .formLogin(withDefaults())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
@@ -51,23 +47,10 @@ public class SecurityConfig {
      * some of the issues that can arise with field injection.
      */
     private final UserDetailServiceImpl userDetailService;
-    private JwtUtil jwtUtil;
-    private AuthenticationManager auth;
 
+    // @Autowired
     public SecurityConfig(@Lazy UserDetailServiceImpl userDetailService) {
         this.userDetailService = userDetailService;
-        this.jwtUtil = jwtUtil;
-        this.auth = auth;
-    }
-
-    @Autowired
-    public void setJwtUtil(JwtUtil jwtUtil) {
-        this.jwtUtil = jwtUtil;
-    }
-
-    @Autowired
-    public void setAuth(AuthenticationManager auth) {
-        this.auth = auth;
     }
 
     public PasswordEncoder passwordEncoder() {
