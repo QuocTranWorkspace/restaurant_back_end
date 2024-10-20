@@ -22,14 +22,12 @@ import com.example.restaurant.dto.user.LoginDTO;
 import com.example.restaurant.dto.user.SignUpDTO;
 import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.service.UserService;
-import com.example.restaurant.utils.JwtUtil;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
     private final UserService userService;
-    private final JwtUtil jwtUtil;
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -37,9 +35,8 @@ public class AuthenticationController {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationController(UserService userService, JwtUtil jwtUtil) {
+    public AuthenticationController(UserService userService) {
         this.userService = userService;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/signup")
@@ -72,27 +69,20 @@ public class AuthenticationController {
     }
 
     @GetMapping("/userAuthenticated")
-    public ResponseEntity<ResponseDTO> getMethodName() {
-        ResponseDTO response = null;
+    public ResponseEntity<UserEntity> getMethodName() {
         Object userAuthenticated = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userAuthenticated instanceof UserDetails) {
-            UserEntity userLoggedIn = (UserEntity) userAuthenticated;
-            response = new ResponseDTO(200, "GET OK", userLoggedIn);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok((UserEntity) userAuthenticated);
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @GetMapping("/validateusername")
-    public ResponseEntity<ResponseDTO> getMethodName(@RequestBody String username) {
-        UserEntity userList = userService.findByUserName(username);
-        boolean isValid = true;
+    @GetMapping("/validateUsername")
+    public ResponseEntity<ResponseDTO> getMethodName(@RequestBody SignUpDTO username) {
+        System.out.println(username);
+        UserEntity userList = userService.findByUserName(username.getUsername());
 
-        if (Objects.nonNull(userList)) {
-            isValid = false;
-        }
-
-        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", isValid));
+        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(userList)));
     }
 
 }
