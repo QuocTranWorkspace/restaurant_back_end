@@ -1,8 +1,8 @@
-package com.example.Restaurant.repository;
+package com.example.restaurant.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.Restaurant.model.UserRole;
+import com.example.restaurant.model.UserRole;
 
 @Repository
 public interface UserRoleRepository extends BaseRepository<UserRole> {

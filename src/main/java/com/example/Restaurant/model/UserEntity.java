@@ -1,4 +1,4 @@
-package com.example.Restaurant.model;
+package com.example.restaurant.model;
 
 import java.io.Serial;
 import java.util.Collection;
@@ -45,6 +45,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @Column(name = "phone", length = 100)
     private String phone;
+
+    @Column(name = "address", length = 100)
+    private String address;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "tbl_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -142,5 +145,13 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

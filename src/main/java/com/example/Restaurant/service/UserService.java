@@ -1,20 +1,19 @@
-package com.example.Restaurant.service;
+package com.example.restaurant.service;
 
 import java.util.Objects;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.example.Restaurant.dto.ResponseDTO;
-import com.example.Restaurant.dto.user.LoginDTO;
-import com.example.Restaurant.dto.user.SignUpDTO;
-import com.example.Restaurant.exception.CustomException;
-import com.example.Restaurant.model.RoleEntity;
-import com.example.Restaurant.model.TokenEntity;
-import com.example.Restaurant.model.UserEntity;
-import com.example.Restaurant.model.UserRole;
-import com.example.Restaurant.repository.UserRepository;
-import com.example.Restaurant.utils.JwtUtil;
+import com.example.restaurant.dto.ResponseDTO;
+import com.example.restaurant.dto.user.LoginDTO;
+import com.example.restaurant.dto.user.SignUpDTO;
+import com.example.restaurant.exception.CustomException;
+import com.example.restaurant.model.RoleEntity;
+import com.example.restaurant.model.UserEntity;
+import com.example.restaurant.model.UserRole;
+import com.example.restaurant.repository.UserRepository;
+import com.example.restaurant.utils.JwtUtil;
 
 import jakarta.transaction.Transactional;
 
@@ -24,14 +23,12 @@ public class UserService extends BaseService<UserEntity> {
     private final UserRepository userRepository;
     private final UserRoleService userRoleService;
     private final RoleService roleService;
-    private final TokenService tokenService;
     private final JwtUtil jwtUtil;
 
-    public UserService(UserRepository userRepository, UserRoleService userRoleService, TokenService tokenService,
-            JwtUtil jwtUtil, RoleService roleService) {
+    public UserService(UserRepository userRepository, UserRoleService userRoleService, JwtUtil jwtUtil,
+            RoleService roleService) {
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
-        this.tokenService = tokenService;
         this.jwtUtil = jwtUtil;
         this.roleService = roleService;
     }
@@ -50,6 +47,8 @@ public class UserService extends BaseService<UserEntity> {
         if (Objects.nonNull(this.findByUserName(signUpData.getUsername()))) {
             throw new CustomException("Username already exist");
         }
+
+        // Default role
         RoleEntity role = roleService.findByRoleName("USER");
 
         // Create new user instance
@@ -64,38 +63,29 @@ public class UserService extends BaseService<UserEntity> {
 
         // Set default role = USER
         UserRole ur = new UserRole();
-        ur.setRoleId(2);
+        ur.setRoleId(role.getId());
         ur.setUserId(userSave.getId());
         userRoleService.saveOrUpdate(ur);
 
-        // Save token
-        String token = jwtUtil.generateToken(userSave);
-        TokenEntity tokenEntity = new TokenEntity(userSave, token);
-        tokenService.saveOrUpdate(tokenEntity);
-
-        return new ResponseDTO("sucess", "Sign up successful");
+        return new ResponseDTO(200, "Registered successful", null);
     }
 
     public ResponseDTO login(LoginDTO loginData) {
         // Find user
         UserEntity user = this.findByUserName(loginData.getUsername());
 
-        if (Objects.nonNull(user)) {
+        if (!Objects.nonNull(user)) {
             throw new CustomException("User is not exist");
         }
 
-        if (!user.getPassword().equals(new BCryptPasswordEncoder(4).encode(loginData.getPassword()))) {
+        if (!new BCryptPasswordEncoder(4).matches(loginData.getPassword(), user.getPassword())) {
             throw new CustomException("Wrong password");
         }
 
         // Get token
-        TokenEntity token = tokenService.getToken(user);
+        String token = jwtUtil.generateToken(user);
 
-        if (!Objects.nonNull(token)) {
-            throw new CustomException("Token is not exist");
-        }
-
-        return new ResponseDTO("sucess", token.getToken());
+        return new ResponseDTO(200, "Logged in successful", token);
     }
 
 }

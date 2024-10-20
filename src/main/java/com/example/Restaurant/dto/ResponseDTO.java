@@ -1,20 +1,22 @@
-package com.example.Restaurant.dto;
+package com.example.restaurant.dto;
 
 public class ResponseDTO {
 
-    private String status;
+    private int status;
     private String message;
+    private Object data;
 
-    public ResponseDTO(String status, String message) {
+    public ResponseDTO(int status, String message, Object data) {
         this.status = status;
         this.message = message;
+        this.data = data;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -24,6 +26,14 @@ public class ResponseDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 
 }

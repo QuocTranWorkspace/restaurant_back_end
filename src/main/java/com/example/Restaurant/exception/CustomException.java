@@ -1,4 +1,4 @@
-package com.example.Restaurant.exception;
+package com.example.restaurant.exception;
 
 public class CustomException extends IllegalArgumentException {
 

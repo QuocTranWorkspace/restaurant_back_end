@@ -1,8 +1,8 @@
-package com.example.Restaurant.repository;
+package com.example.restaurant.repository;
 
 import org.springframework.stereotype.Repository;
 
-import com.example.Restaurant.model.ProductEntity;
+import com.example.restaurant.model.ProductEntity;
 
 @Repository
 public interface ProductRepository extends BaseRepository<ProductEntity> {

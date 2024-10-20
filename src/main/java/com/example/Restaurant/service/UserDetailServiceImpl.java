@@ -1,11 +1,11 @@
-package com.example.Restaurant.service;
+package com.example.restaurant.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.Restaurant.model.UserEntity;
+import com.example.restaurant.model.UserEntity;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {

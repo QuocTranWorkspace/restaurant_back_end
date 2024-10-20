@@ -1,4 +1,4 @@
-package com.example.Restaurant.service;
+package com.example.restaurant.service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,9 +8,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.example.Restaurant.model.BaseEntity;
-import com.example.Restaurant.model.PagerData;
-import com.example.Restaurant.repository.BaseRepository;
+import com.example.restaurant.model.BaseEntity;
+import com.example.restaurant.model.PagerData;
+import com.example.restaurant.repository.BaseRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

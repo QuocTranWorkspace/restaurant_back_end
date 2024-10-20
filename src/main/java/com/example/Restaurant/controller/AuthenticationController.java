@@ -1,4 +1,6 @@
-package com.example.Restaurant.controller;
+package com.example.restaurant.controller;
+
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.Restaurant.dto.user.LoginDTO;
-import com.example.Restaurant.dto.user.SignUpDTO;
-import com.example.Restaurant.model.UserEntity;
-import com.example.Restaurant.service.UserService;
-import com.example.Restaurant.utils.JwtUtil;
+import com.example.restaurant.dto.ResponseDTO;
+import com.example.restaurant.dto.user.LoginDTO;
+import com.example.restaurant.dto.user.SignUpDTO;
+import com.example.restaurant.model.UserEntity;
+import com.example.restaurant.service.UserService;
+import com.example.restaurant.utils.JwtUtil;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -45,19 +48,21 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginDTO reqUser) {
+    public ResponseEntity<ResponseDTO> loginUser(@RequestBody LoginDTO reqUser) {
+        ResponseDTO response = null;
         try {
             UserEntity user = userService.findByUserName(reqUser.getUsername());
+
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(reqUser.getUsername(),
                             reqUser.getPassword(), user.getAuthorities()));
 
-            String token = jwtUtil.generateToken(user); // Generate token
+            response = userService.login(reqUser);
 
-            return ResponseEntity.ok(token); // Send token in the response body
+            return ResponseEntity.ok(response); // Send token in the response body
 
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
 
@@ -67,13 +72,27 @@ public class AuthenticationController {
     }
 
     @GetMapping("/userAuthenticated")
-    public UserEntity getMethodName() {
+    public ResponseEntity<ResponseDTO> getMethodName() {
+        ResponseDTO response = null;
         Object userAuthenticated = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(userAuthenticated);
         if (userAuthenticated instanceof UserDetails) {
-            return (UserEntity) userAuthenticated;
+            UserEntity userLoggedIn = (UserEntity) userAuthenticated;
+            response = new ResponseDTO(200, "GET OK", userLoggedIn);
+            return ResponseEntity.ok(response);
         }
-        return new UserEntity();
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @GetMapping("/validateusername")
+    public ResponseEntity<ResponseDTO> getMethodName(@RequestBody String username) {
+        UserEntity userList = userService.findByUserName(username);
+        boolean isValid = true;
+
+        if (Objects.nonNull(userList)) {
+            isValid = false;
+        }
+
+        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", isValid));
     }
 
 }

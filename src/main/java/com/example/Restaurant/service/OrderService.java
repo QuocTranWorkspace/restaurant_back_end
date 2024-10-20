@@ -1,9 +1,9 @@
-package com.example.Restaurant.service;
+package com.example.restaurant.service;
 
 import org.springframework.stereotype.Service;
 
-import com.example.Restaurant.model.OrderEntity;
-import com.example.Restaurant.repository.OrderRepository;
+import com.example.restaurant.model.OrderEntity;
+import com.example.restaurant.repository.OrderRepository;
 
 @Service
 public class OrderService extends BaseService<OrderEntity> {

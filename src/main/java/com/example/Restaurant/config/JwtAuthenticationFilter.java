@@ -1,4 +1,4 @@
-package com.example.Restaurant.config;
+package com.example.restaurant.config;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.Restaurant.utils.JwtUtil;
+import com.example.restaurant.utils.JwtUtil;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -6,6 +6,7 @@ CREATE TABLE tbl_user (
     last_name VARCHAR(100) NOT NULL,
     email VARCHAR(255) NOT NULL,
     phone VARCHAR(255) UNIQUE,
+    address VARCHAR(255),
     status TINYINT(1) DEFAULT 1,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_date DATETIME

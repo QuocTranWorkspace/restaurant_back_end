@@ -1,4 +1,4 @@
-package com.example.Restaurant.dto.cart;
+package com.example.restaurant.dto.cart;
 
 public class CartItem {
 

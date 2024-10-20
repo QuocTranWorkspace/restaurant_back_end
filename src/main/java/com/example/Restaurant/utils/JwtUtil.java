@@ -1,4 +1,4 @@
-package com.example.Restaurant.utils;
+package com.example.restaurant.utils;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.example.Restaurant.model.UserEntity;
+import com.example.restaurant.model.UserEntity;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

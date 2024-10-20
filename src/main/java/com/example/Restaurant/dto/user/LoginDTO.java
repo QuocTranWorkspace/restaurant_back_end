@@ -1,4 +1,4 @@
-package com.example.Restaurant.dto.user;
+package com.example.restaurant.dto.user;
 
 public class LoginDTO {
 
