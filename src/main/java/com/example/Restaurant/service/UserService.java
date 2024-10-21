@@ -43,7 +43,7 @@ public class UserService extends BaseService<UserEntity> {
     }
 
     @Transactional
-    public ResponseDTO signup(SignUpDTO signUpData) {
+    public ResponseDTO register(SignUpDTO signUpData) {
         if (Objects.nonNull(this.findByUserName(signUpData.getUsername()))) {
             throw new CustomException("Username already exist");
         }
@@ -67,7 +67,7 @@ public class UserService extends BaseService<UserEntity> {
         ur.setUserId(userSave.getId());
         userRoleService.saveOrUpdate(ur);
 
-        return new ResponseDTO(200, "Registered successful", null);
+        return new ResponseDTO(200, "Registered successful", userSave);
     }
 
     public ResponseDTO login(LoginDTO loginData) {

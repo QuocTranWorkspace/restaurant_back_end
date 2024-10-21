@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,9 +40,9 @@ public class AuthenticationController {
         this.userService = userService;
     }
 
-    @PostMapping("/signup")
-    public String signupUser(@RequestBody SignUpDTO user) {
-        return "user/index";
+    @PostMapping("/register")
+    public ResponseDTO signupUser(@RequestBody SignUpDTO user) {
+        return userService.register(user);
     }
 
     @PostMapping("/login")
@@ -77,10 +78,10 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
-    @GetMapping("/validateUsername")
-    public ResponseEntity<ResponseDTO> getMethodName(@RequestBody SignUpDTO username) {
+    @GetMapping("/validateUsername/{username}")
+    public ResponseEntity<ResponseDTO> getMethodName(@PathVariable String username) {
         System.out.println(username);
-        UserEntity userList = userService.findByUserName(username.getUsername());
+        UserEntity userList = userService.findByUserName(username);
 
         return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(userList)));
     }
