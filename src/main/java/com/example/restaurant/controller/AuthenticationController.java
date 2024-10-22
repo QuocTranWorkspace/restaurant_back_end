@@ -42,7 +42,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseDTO signupUser(@RequestBody SignUpDTO user) {
-        return userService.register(user);
+        return userService.register(user, "USER");
     }
 
     @PostMapping("/login")
@@ -80,7 +80,6 @@ public class AuthenticationController {
 
     @GetMapping("/validateUsername/{username}")
     public ResponseEntity<ResponseDTO> getMethodName(@PathVariable String username) {
-        System.out.println(username);
         UserEntity userList = userService.findByUserName(username);
 
         return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(userList)));

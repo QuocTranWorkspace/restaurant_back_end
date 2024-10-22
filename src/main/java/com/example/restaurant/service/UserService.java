@@ -43,13 +43,13 @@ public class UserService extends BaseService<UserEntity> {
     }
 
     @Transactional
-    public ResponseDTO register(SignUpDTO signUpData) {
+    public ResponseDTO register(SignUpDTO signUpData, String roleName) {
         if (Objects.nonNull(this.findByUserName(signUpData.getUsername()))) {
             throw new CustomException("Username already exist");
         }
 
         // Default role
-        RoleEntity role = roleService.findByRoleName("USER");
+        RoleEntity role = roleService.findByRoleName(roleName);
 
         // Create new user instance
         UserEntity userSave = new UserEntity();
