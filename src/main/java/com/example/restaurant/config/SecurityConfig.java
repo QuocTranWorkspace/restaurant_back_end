@@ -25,10 +25,12 @@ public class SecurityConfig {
                                 .csrf(crsf -> crsf.disable())
                                 .authorizeHttpRequests(auth -> auth
                                                 // Allow all requests to home view
-                                                .requestMatchers("/**").permitAll()
+                                                .requestMatchers("/api/auth/**").permitAll()
                                                 // Allow all static resources requests
                                                 .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
-                                                .permitAll())
+                                                .permitAll()
+                                                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                                                .anyRequest().authenticated())
                                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailService),
                                                 UsernamePasswordAuthenticationFilter.class)
                                 .build();
