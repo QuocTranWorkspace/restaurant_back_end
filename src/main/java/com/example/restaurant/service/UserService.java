@@ -1,5 +1,6 @@
 package com.example.restaurant.service;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.dto.user.LoginDTO;
 import com.example.restaurant.dto.user.SignUpDTO;
+import com.example.restaurant.dto.user.UserDTO;
 import com.example.restaurant.exception.CustomException;
 import com.example.restaurant.model.RoleEntity;
 import com.example.restaurant.model.UserEntity;
@@ -67,7 +69,15 @@ public class UserService extends BaseService<UserEntity> {
         ur.setUserId(userSave.getId());
         userRoleService.saveOrUpdate(ur);
 
-        return new ResponseDTO(200, "Registered successful", userSave);
+        // Response data
+        UserDTO resUser = new UserDTO();
+        resUser.setUserName(signUpData.getUsername());
+        resUser.setFirstName(signUpData.getFirstname());
+        resUser.setLastName(signUpData.getLastname());
+        resUser.setEmail(signUpData.getEmail());
+        resUser.setRoles(Arrays.asList(role.getRoleName()));
+
+        return new ResponseDTO(200, "Registered successful", resUser);
     }
 
     public ResponseDTO login(LoginDTO loginData) {

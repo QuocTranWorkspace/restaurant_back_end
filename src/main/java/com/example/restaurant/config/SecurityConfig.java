@@ -25,7 +25,7 @@ public class SecurityConfig {
                                 .csrf(crsf -> crsf.disable())
                                 .authorizeHttpRequests(auth -> auth
                                                 // Allow all requests to home view
-                                                .requestMatchers("/api/auth/**").permitAll()
+                                                .requestMatchers("/api/auth/**", "/home").permitAll()
                                                 // Allow all static resources requests
                                                 .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
                                                 .permitAll()

@@ -15,8 +15,8 @@ CREATE TABLE tbl_product (
     original_price DECIMAL NOT NULL,
     sale_price DECIMAL NOT NULL,
     category_id INT NOT NULL,
-    CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES tbl_category(id),
     status TINYINT(1) DEFAULT 1,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_date DATETIME
+    updated_date DATETIME,
+    CONSTRAINT fk_product_category FOREIGN KEY (category_id) REFERENCES tbl_category(id)
 );

@@ -1,5 +1,7 @@
 package com.example.restaurant.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.dto.user.LoginDTO;
 import com.example.restaurant.dto.user.SignUpDTO;
+import com.example.restaurant.dto.user.UserDTO;
+import com.example.restaurant.model.RoleEntity;
 import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.service.UserService;
 
@@ -70,19 +74,42 @@ public class AuthenticationController {
     }
 
     @GetMapping("/userAuthenticated")
-    public ResponseEntity<UserEntity> getMethodName() {
+    public ResponseEntity<UserDTO> getMethodName() {
         Object userAuthenticated = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userAuthenticated instanceof UserDetails) {
-            return ResponseEntity.ok((UserEntity) userAuthenticated);
+            UserEntity user = (UserEntity) userAuthenticated;
+            UserDTO resUser = new UserDTO();
+            resUser.setUserName(user.getUsername());
+            resUser.setFirstName(user.getFirstName());
+            resUser.setLastName(user.getLastName());
+            resUser.setEmail(user.getEmail());
+            resUser.setPhone(user.getPhone());
+            List<String> tempRoles = new ArrayList<>();
+            for (RoleEntity role : user.getRoles()) {
+                tempRoles.add(role.getRoleName());
+            }
+            resUser.setRoles(tempRoles);
+            return ResponseEntity.ok(resUser);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
     @GetMapping("/validateUsername/{username}")
     public ResponseEntity<ResponseDTO> getMethodName(@PathVariable String username) {
-        UserEntity userList = userService.findByUserName(username);
+        UserEntity user = userService.findByUserName(username);
+        UserDTO resUser = new UserDTO();
+        resUser.setUserName(user.getUsername());
+        resUser.setFirstName(user.getFirstName());
+        resUser.setLastName(user.getLastName());
+        resUser.setEmail(user.getEmail());
+        resUser.setPhone(user.getPhone());
+        List<String> tempRoles = new ArrayList<>();
+        for (RoleEntity role : user.getRoles()) {
+            tempRoles.add(role.getRoleName());
+        }
+        resUser.setRoles(tempRoles);
 
-        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(userList)));
+        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(resUser)));
     }
 
 }
