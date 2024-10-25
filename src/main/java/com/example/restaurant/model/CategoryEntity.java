@@ -3,6 +3,8 @@ package com.example.restaurant.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +22,7 @@ public class CategoryEntity extends BaseEntity {
     @Column(name = "category_description")
     private String categoryDescription;
 
+    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
     private Set<ProductEntity> products = new HashSet<>();
 
