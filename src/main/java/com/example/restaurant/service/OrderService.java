@@ -16,7 +16,7 @@ public class OrderService extends BaseService<OrderEntity> {
 
     @Override
     protected Class<OrderEntity> clazz() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return OrderEntity.class;
     }
 
     public OrderEntity findByCode(String code) {

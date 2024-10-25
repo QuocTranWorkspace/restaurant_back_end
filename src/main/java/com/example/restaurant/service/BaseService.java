@@ -10,18 +10,17 @@ import org.springframework.stereotype.Service;
 
 import com.example.restaurant.model.BaseEntity;
 import com.example.restaurant.model.PagerData;
-import com.example.restaurant.repository.BaseRepository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.Table;
 import jakarta.transaction.Transactional;
 
 @Service
 public abstract class BaseService<E extends BaseEntity> {
 
     private static final Logger log = LoggerFactory.getLogger(BaseService.class);
-    private BaseRepository<E> baseRepository;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -71,8 +70,10 @@ public abstract class BaseService<E extends BaseEntity> {
      *
      * @return List of records
      */
+    @SuppressWarnings("unchecked")
     public List<E> findAll() {
-        return baseRepository.findAll();
+        Table tbl = clazz().getAnnotation(Table.class);
+        return entityManager.createNativeQuery("SELECT * FROM " + tbl.name(), clazz()).getResultList();
     }
 
     /**

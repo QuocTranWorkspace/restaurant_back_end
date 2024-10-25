@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.restaurant.dto.ResponseDTO;
@@ -25,6 +26,11 @@ public class OrderController {
     public ResponseEntity<ResponseDTO> getAllOrder() {
         List<OrderEntity> orderList = orderService.findAll();
         return ResponseEntity.ok(new ResponseDTO(200, "orderList", orderList));
+    }
+
+    @RequestMapping(value = "/**", method = RequestMethod.OPTIONS)
+    public ResponseEntity<Void> handleOptions() {
+        return ResponseEntity.ok().build();
     }
 
 }
