@@ -12,6 +12,7 @@ import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.dto.user.UserDTO;
 import com.example.restaurant.model.RoleEntity;
 import com.example.restaurant.model.UserEntity;
+import com.example.restaurant.service.RoleService;
 import com.example.restaurant.service.UserService;
 
 @RestController
@@ -19,9 +20,11 @@ import com.example.restaurant.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/userList")
@@ -46,6 +49,12 @@ public class UserController {
             }
         }
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", resUser));
+    }
+
+    @GetMapping("/roleList")
+    public ResponseEntity<ResponseDTO> getMethodName() {
+        List<RoleEntity> roleList = roleService.findAll();
+        return ResponseEntity.ok(new ResponseDTO(200, "get ok", roleList));
     }
 
 }
