@@ -78,18 +78,20 @@ public class AuthenticationController {
         Object userAuthenticated = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userAuthenticated instanceof UserDetails) {
             UserEntity user = (UserEntity) userAuthenticated;
-            UserDTO resUser = new UserDTO();
-            resUser.setUserName(user.getUsername());
-            resUser.setFirstName(user.getFirstName());
-            resUser.setLastName(user.getLastName());
-            resUser.setEmail(user.getEmail());
-            resUser.setPhone(user.getPhone());
-            List<String> tempRoles = new ArrayList<>();
-            for (RoleEntity role : user.getRoles()) {
-                tempRoles.add(role.getRoleName());
+            if (Boolean.TRUE.equals(user.getStatus())) {
+                UserDTO resUser = new UserDTO();
+                resUser.setUserName(user.getUsername());
+                resUser.setFirstName(user.getFirstName());
+                resUser.setLastName(user.getLastName());
+                resUser.setEmail(user.getEmail());
+                resUser.setPhone(user.getPhone());
+                List<String> tempRoles = new ArrayList<>();
+                for (RoleEntity role : user.getRoles()) {
+                    tempRoles.add(role.getRoleName());
+                }
+                resUser.setRoles(tempRoles);
+                return ResponseEntity.ok(resUser);
             }
-            resUser.setRoles(tempRoles);
-            return ResponseEntity.ok(resUser);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
