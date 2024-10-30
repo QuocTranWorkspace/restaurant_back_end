@@ -1,9 +1,8 @@
 package com.example.restaurant.service;
 
-import org.springframework.stereotype.Service;
-
 import com.example.restaurant.model.RoleEntity;
 import com.example.restaurant.repository.RoleRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class RoleService extends BaseService<RoleEntity> {

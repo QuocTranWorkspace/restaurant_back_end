@@ -1,13 +1,12 @@
 package com.example.restaurant.repository;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.example.restaurant.model.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.lang.NonNull;
 
-import com.example.restaurant.model.BaseEntity;
+import java.util.List;
+import java.util.Optional;
 
 @NoRepositoryBean
 public interface BaseRepository<E extends BaseEntity> extends JpaRepository<E, Long> {

@@ -1,12 +1,8 @@
 package com.example.restaurant.model;
 
-import java.util.Date;
+import jakarta.persistence.*;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import java.util.Date;
 
 @MappedSuperclass
 public abstract class BaseEntity {

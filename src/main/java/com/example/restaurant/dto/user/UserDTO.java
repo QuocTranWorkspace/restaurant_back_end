@@ -4,6 +4,7 @@ import java.util.List;
 
 public class UserDTO {
 
+    private int id;
     private String userName;
     private String firstName;
     private String lastName;
@@ -68,4 +69,11 @@ public class UserDTO {
         this.roles = roles;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

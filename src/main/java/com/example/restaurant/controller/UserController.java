@@ -1,19 +1,19 @@
 package com.example.restaurant.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.dto.user.UserDTO;
 import com.example.restaurant.model.RoleEntity;
 import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.service.RoleService;
 import com.example.restaurant.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -34,6 +34,7 @@ public class UserController {
         for (UserEntity u : userList) {
             if (Boolean.TRUE.equals(u.getStatus())) {
                 UserDTO ures = new UserDTO();
+                ures.setId(u.getId());
                 ures.setUserName(u.getUsername());
                 ures.setFirstName(u.getFirstName());
                 ures.setLastName(u.getLastName());
@@ -55,6 +56,12 @@ public class UserController {
     public ResponseEntity<ResponseDTO> getMethodName() {
         List<RoleEntity> roleList = roleService.findAll();
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", roleList));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<ResponseDTO> getUser(@PathVariable("userId") String userId) {
+        UserEntity user = userService.getById(Integer.parseInt(userId));
+        return ResponseEntity.ok(new ResponseDTO(200, "get ok", user));
     }
 
 }

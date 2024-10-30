@@ -1,11 +1,5 @@
 package com.example.restaurant.service;
 
-import java.util.Arrays;
-import java.util.Objects;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.dto.user.LoginDTO;
 import com.example.restaurant.dto.user.SignUpDTO;
@@ -16,8 +10,12 @@ import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.model.UserRole;
 import com.example.restaurant.repository.UserRepository;
 import com.example.restaurant.utils.JwtUtil;
-
 import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
+import java.util.Objects;
 
 @Service
 public class UserService extends BaseService<UserEntity> {
