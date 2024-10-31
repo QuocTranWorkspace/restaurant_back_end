@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,14 +22,16 @@ public class SecurityConfig {
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 return http
-                                .csrf(crsf -> crsf.disable())
+                                .csrf(AbstractHttpConfigurer::disable)
                                 .authorizeHttpRequests(auth -> auth
                                                 // Allow all requests to home view
-                                                .requestMatchers("/api/auth/**", "/api/**", "/home").permitAll()
+                                                .requestMatchers("/api/auth/**", "/api/**", "/home")
+                                                .permitAll()
                                                 // Allow all static resources requests
                                                 .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
                                                 .permitAll()
-                                                .requestMatchers("/admin/**").hasAnyRole("ADMIN"))
+                                                .requestMatchers("/admin/**")
+                                                .hasAnyRole("ADMIN"))
                                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailService),
                                                 UsernamePasswordAuthenticationFilter.class)
                                 .build();

@@ -14,8 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class UserService extends BaseService<UserEntity> {
@@ -68,14 +67,10 @@ public class UserService extends BaseService<UserEntity> {
         userRoleService.saveOrUpdate(ur);
 
         // Response data
-        UserDTO resUser = new UserDTO();
-        resUser.setUserName(signUpData.getUsername());
-        resUser.setFirstName(signUpData.getFirstname());
-        resUser.setLastName(signUpData.getLastname());
-        resUser.setEmail(signUpData.getEmail());
-        resUser.setRoles(Arrays.asList(role.getRoleName()));
+        UserDTO userResponse = new UserDTO();
+        createUserDTO(userResponse, userSave);
 
-        return new ResponseDTO(200, "Registered successful", resUser);
+        return new ResponseDTO(200, "Registered successful", userResponse);
     }
 
     public ResponseDTO login(LoginDTO loginData) {
@@ -94,6 +89,45 @@ public class UserService extends BaseService<UserEntity> {
         String token = jwtUtil.generateToken(user);
 
         return new ResponseDTO(200, "Logged in successful", token);
+    }
+
+    public void createUserDTO(UserDTO userDTO, UserEntity userEntity) {
+        userDTO.setId(userEntity.getId());
+        userDTO.setUserName(userEntity.getUsername());
+        userDTO.setFirstName(userEntity.getFirstName());
+        userDTO.setLastName(userEntity.getLastName());
+        userDTO.setEmail(userEntity.getEmail());
+        userDTO.setPhone(userEntity.getPhone());
+        userDTO.setAddress(userEntity.getAddress());
+        List<String> tempRoles = new ArrayList<>();
+        for (RoleEntity role: userEntity.getRoles()) {
+            tempRoles.add(role.getRoleName());
+        }
+        userDTO.setRoles(tempRoles);
+    }
+
+    public UserDTO bindingUserData(UserEntity userEntity, UserDTO userDTO) {
+        if (userDTO.getUserName() != null && !userDTO.getUserName().isEmpty()) {
+            userEntity.setUserName(userDTO.getUserName());
+        }
+        if (userDTO.getFirstName() != null && !userDTO.getFirstName().isEmpty()) {
+            userEntity.setFirstName(userDTO.getFirstName());
+        }
+        if (userDTO.getLastName() != null && !userDTO.getLastName().isEmpty()) {
+            userEntity.setLastName(userDTO.getLastName());
+        }
+        if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty()) {
+            userEntity.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getPhone() != null && !userDTO.getPhone().isEmpty()) {
+            userEntity.setPhone(userDTO.getPhone());
+        }
+        if (userDTO.getAddress() != null && userDTO.getAddress().isEmpty()) {
+            userEntity.setAddress(userDTO.getAddress());
+        }
+        UserDTO userResponse = new UserDTO();
+        createUserDTO(userResponse, userEntity);
+        return userResponse;
     }
 
 }

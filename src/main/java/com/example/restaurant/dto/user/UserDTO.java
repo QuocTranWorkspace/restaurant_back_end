@@ -1,5 +1,9 @@
 package com.example.restaurant.dto.user;
 
+import com.example.restaurant.model.RoleEntity;
+import com.example.restaurant.model.UserEntity;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO {

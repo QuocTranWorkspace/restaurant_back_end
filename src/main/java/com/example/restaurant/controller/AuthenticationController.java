@@ -72,18 +72,10 @@ public class AuthenticationController {
         if (userAuthenticated instanceof UserDetails) {
             UserEntity user = (UserEntity) userAuthenticated;
             if (Boolean.TRUE.equals(user.getStatus())) {
-                UserDTO resUser = new UserDTO();
-                resUser.setUserName(user.getUsername());
-                resUser.setFirstName(user.getFirstName());
-                resUser.setLastName(user.getLastName());
-                resUser.setEmail(user.getEmail());
-                resUser.setPhone(user.getPhone());
-                List<String> tempRoles = new ArrayList<>();
-                for (RoleEntity role : user.getRoles()) {
-                    tempRoles.add(role.getRoleName());
-                }
-                resUser.setRoles(tempRoles);
-                return ResponseEntity.ok(resUser);
+                UserDTO userResponse = new UserDTO();
+                userService.createUserDTO(userResponse, user);
+                System.out.println("yahalo" + userResponse.getUserName());
+                return ResponseEntity.ok(userResponse);
             }
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
@@ -92,19 +84,12 @@ public class AuthenticationController {
     @GetMapping("/validateUsername/{username}")
     public ResponseEntity<ResponseDTO> getMethodName(@PathVariable String username) {
         UserEntity user = userService.findByUserName(username);
-        UserDTO resUser = new UserDTO();
-        resUser.setUserName(user.getUsername());
-        resUser.setFirstName(user.getFirstName());
-        resUser.setLastName(user.getLastName());
-        resUser.setEmail(user.getEmail());
-        resUser.setPhone(user.getPhone());
-        List<String> tempRoles = new ArrayList<>();
-        for (RoleEntity role : user.getRoles()) {
-            tempRoles.add(role.getRoleName());
+        UserDTO userResponse = null;
+        if (Objects.nonNull(user)) {
+            userResponse = new UserDTO();
+            userService.createUserDTO(userResponse, user);
         }
-        resUser.setRoles(tempRoles);
-
-        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(resUser)));
+        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(userResponse)));
     }
 
 }

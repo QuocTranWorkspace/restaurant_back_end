@@ -7,13 +7,12 @@ import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.service.RoleService;
 import com.example.restaurant.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/user")
@@ -33,20 +32,9 @@ public class UserController {
         List<UserDTO> resUser = new ArrayList<>();
         for (UserEntity u : userList) {
             if (Boolean.TRUE.equals(u.getStatus())) {
-                UserDTO ures = new UserDTO();
-                ures.setId(u.getId());
-                ures.setUserName(u.getUsername());
-                ures.setFirstName(u.getFirstName());
-                ures.setLastName(u.getLastName());
-                ures.setEmail(u.getEmail());
-                ures.setPhone(u.getPhone());
-                ures.setAddress(u.getAddress());
-                List<String> tempRoles = new ArrayList<>();
-                for (RoleEntity role : u.getRoles()) {
-                    tempRoles.add(role.getRoleName());
-                }
-                ures.setRoles(tempRoles);
-                resUser.add(ures);
+                UserDTO userResponse = new UserDTO();
+                userService.createUserDTO(userResponse, u);
+                resUser.add(userResponse);
             }
         }
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", resUser));
@@ -61,7 +49,21 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<ResponseDTO> getUser(@PathVariable("userId") String userId) {
         UserEntity user = userService.getById(Integer.parseInt(userId));
-        return ResponseEntity.ok(new ResponseDTO(200, "get ok", user));
+        UserDTO userResponse = new UserDTO();
+        userService.createUserDTO(userResponse, user);
+        return ResponseEntity.ok(new ResponseDTO(200, "get ok", userResponse));
+    }
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<ResponseDTO> updateUser(@PathVariable("userId") String id, @RequestBody UserDTO user) {
+        UserEntity userUpdate = userService.getById(Integer.parseInt(id));
+        UserDTO userResponse = null;
+        if (Objects.nonNull(userUpdate) && !Objects.isNull(user)) {
+            userResponse = userService.bindingUserData(userUpdate, user);
+            userUpdate.setUpdatedDate(new Date());
+            userService.saveOrUpdate(userUpdate);
+        }
+        return ResponseEntity.ok(new ResponseDTO(200, "update ok", userResponse));
     }
 
 }
