@@ -4,7 +4,6 @@ import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.dto.user.LoginDTO;
 import com.example.restaurant.dto.user.SignUpDTO;
 import com.example.restaurant.dto.user.UserDTO;
-import com.example.restaurant.model.RoleEntity;
 import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +16,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
-
     private final UserService userService;
     private AuthenticationManager authenticationManager;
 
@@ -82,7 +78,7 @@ public class AuthenticationController {
     }
 
     @GetMapping("/validateUsername/{username}")
-    public ResponseEntity<ResponseDTO> getMethodName(@PathVariable String username) {
+    public ResponseEntity<ResponseDTO> validateUsername(@PathVariable String username) {
         UserEntity user = userService.findByUserName(username);
         UserDTO userResponse = null;
         if (Objects.nonNull(user)) {
@@ -91,5 +87,4 @@ public class AuthenticationController {
         }
         return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(userResponse)));
     }
-
 }

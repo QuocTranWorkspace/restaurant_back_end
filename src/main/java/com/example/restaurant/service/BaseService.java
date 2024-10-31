@@ -17,7 +17,6 @@ import java.util.List;
 
 @Service
 public abstract class BaseService<E extends BaseEntity> {
-
     private static final Logger log = LoggerFactory.getLogger(BaseService.class);
 
     @PersistenceContext
@@ -131,5 +130,4 @@ public abstract class BaseService<E extends BaseEntity> {
 
         return result;
     }
-
 }

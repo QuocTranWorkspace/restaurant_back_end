@@ -5,7 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends BaseRepository<OrderEntity> {
-
     OrderEntity findByCode(String code);
-
 }

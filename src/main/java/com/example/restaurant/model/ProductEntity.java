@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "tbl_product")
 public class ProductEntity extends BaseEntity {
-
     @Column(name = "avatar", nullable = true)
     private String avatar;
 

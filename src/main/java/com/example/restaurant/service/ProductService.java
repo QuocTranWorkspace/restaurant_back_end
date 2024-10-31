@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductService extends BaseService<ProductEntity> {
-
     private final ProductRepository productRepository;
 
     public ProductService(ProductRepository productRepository) {
@@ -21,5 +20,4 @@ public class ProductService extends BaseService<ProductEntity> {
     public ProductEntity findByProductName(String productName) {
         return productRepository.findByProductName(productName);
     }
-
 }

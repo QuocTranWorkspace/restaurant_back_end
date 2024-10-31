@@ -4,7 +4,8 @@ import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.dto.user.UserDTO;
 import com.example.restaurant.model.RoleEntity;
 import com.example.restaurant.model.UserEntity;
-import com.example.restaurant.service.RoleService;
+import com.example.restaurant.model.UserRole;
+import com.example.restaurant.service.UserRoleService;
 import com.example.restaurant.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,13 +19,12 @@ import java.util.Objects;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-
     private final UserService userService;
-    private final RoleService roleService;
+    private final UserRoleService userRoleService;
 
-    public UserController(UserService userService, RoleService roleService) {
+    public UserController(UserService userService, UserRoleService userRoleService) {
         this.userService = userService;
-        this.roleService = roleService;
+        this.userRoleService = userRoleService;
     }
 
     @GetMapping("/userList")
@@ -41,12 +41,6 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", resUser));
     }
 
-    @GetMapping("/roleList")
-    public ResponseEntity<ResponseDTO> getRoleList() {
-        List<RoleEntity> roleList = roleService.findAll();
-        return ResponseEntity.ok(new ResponseDTO(200, "get ok", roleList));
-    }
-
     @GetMapping("/{userId}")
     public ResponseEntity<ResponseDTO> getUser(@PathVariable("userId") String userId) {
         UserEntity user = userService.getById(Integer.parseInt(userId));
@@ -56,7 +50,7 @@ public class UserController {
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity<ResponseDTO> createUser(@PathVariable("userId") String id, @RequestBody UserDTO user) {
+    public ResponseEntity<ResponseDTO> updateUser(@PathVariable("userId") String id, @RequestBody UserDTO user) {
         UserEntity userUpdate = userService.getById(Integer.parseInt(id));
         UserDTO userResponse = null;
         if (Objects.nonNull(userUpdate) && !Objects.isNull(user)) {
@@ -76,7 +70,12 @@ public class UserController {
             userEntity.setPassword(new BCryptPasswordEncoder(4).encode("Abc@123"));
             userService.saveOrUpdate(userEntity);
         }
+        for (RoleEntity role: userEntity.getRoles()) {
+            UserRole ur = new UserRole();
+            ur.setRoleId(role.getId());
+            ur.setUserId(userEntity.getId());
+            userRoleService.saveOrUpdate(ur);
+        }
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", userResponse));
     }
-
 }

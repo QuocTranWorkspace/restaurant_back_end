@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserRoleService extends BaseService<UserRole> {
-
     private final UserRoleRepository userRoleRepository;
 
     public UserRoleService(UserRoleRepository userRoleRepository) {
@@ -17,5 +16,4 @@ public class UserRoleService extends BaseService<UserRole> {
     protected Class<UserRole> clazz() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
 }

@@ -10,7 +10,6 @@ import java.util.Optional;
 
 @NoRepositoryBean
 public interface BaseRepository<E extends BaseEntity> extends JpaRepository<E, Long> {
-
     // Common method to find by ID with Optional return type
     @SuppressWarnings("null")
     @NonNull
@@ -26,5 +25,4 @@ public interface BaseRepository<E extends BaseEntity> extends JpaRepository<E, L
     @NonNull
     @Override
     List<E> findAll();
-
 }

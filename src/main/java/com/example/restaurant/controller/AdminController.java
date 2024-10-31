@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
-
     private final UserService userService;
 
     public AdminController(UserService userService) {
@@ -22,5 +21,4 @@ public class AdminController {
     public ResponseDTO signupAdmin(@RequestBody SignUpDTO user) {
         return userService.register(user, "ADMIN");
     }
-
 }

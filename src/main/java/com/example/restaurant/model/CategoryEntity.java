@@ -12,7 +12,6 @@ import java.util.Set;
 @Table(name = "tbl_category")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "categoryName")
 public class CategoryEntity extends BaseEntity {
-
     @Column(name = "category_name")
     private String categoryName;
 
@@ -56,5 +55,4 @@ public class CategoryEntity extends BaseEntity {
     public void setProducts(Set<ProductEntity> products) {
         this.products = products;
     }
-
 }

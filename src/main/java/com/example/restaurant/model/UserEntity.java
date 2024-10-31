@@ -1,5 +1,7 @@
 package com.example.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -14,7 +16,6 @@ import java.util.Set;
 @Entity
 @Table(name = "tbl_user")
 public class UserEntity extends BaseEntity implements UserDetails {
-
     @Serial
     private static final long serialVersionUID = 1L;
 
@@ -43,6 +44,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "tbl_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIgnore
     private final Set<RoleEntity> roles = new HashSet<>();
 
     public void addRole(RoleEntity role) {

@@ -14,12 +14,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 @Service
 public class UserService extends BaseService<UserEntity> {
-
     private final UserRepository userRepository;
     private final UserRoleService userRoleService;
     private final RoleService roleService;
@@ -113,6 +114,11 @@ public class UserService extends BaseService<UserEntity> {
         updateIfNotEmpty(userDTO.getPhone(), userEntity::setPhone);
         updateIfNotEmpty(userDTO.getAddress(), userEntity::setAddress);
 
+        for (String role: userDTO.getRoles()) {
+            RoleEntity roleSave = roleService.findByRoleName(role);
+            userEntity.addRole(roleSave);
+        }
+
         return userDTO;
     }
 
@@ -121,5 +127,4 @@ public class UserService extends BaseService<UserEntity> {
             setter.accept(fieldValue);
         }
     }
-
 }

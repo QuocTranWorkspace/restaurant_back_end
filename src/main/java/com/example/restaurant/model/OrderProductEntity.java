@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "tbl_order_product")
 public class OrderProductEntity extends BaseEntity {
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
@@ -40,5 +39,4 @@ public class OrderProductEntity extends BaseEntity {
     public void setQuantiy(int quantiy) {
         this.quantiy = quantiy;
     }
-
 }

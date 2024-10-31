@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrderProductService extends BaseService<OrderProductEntity> {
-
     private final OrderProductRepository orderProductRepository;
 
     public OrderProductService(OrderProductRepository orderProductRepository) {
@@ -17,5 +16,4 @@ public class OrderProductService extends BaseService<OrderProductEntity> {
     protected Class<OrderProductEntity> clazz() {
         return OrderProductEntity.class;
     }
-
 }

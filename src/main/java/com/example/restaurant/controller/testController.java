@@ -13,7 +13,6 @@ import java.io.IOException;
 @Controller
 @RequestMapping("api/auth")
 public class testController {
-
     @GetMapping({ "/", "/home" })
     public ResponseEntity<String> res(final Model model, final HttpServletRequest request,
             final HttpServletResponse response)
@@ -32,5 +31,4 @@ public class testController {
             throws IOException {
         return "admin/index";
     }
-
 }

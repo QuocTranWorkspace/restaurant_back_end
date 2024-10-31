@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
-
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
@@ -31,5 +30,4 @@ public class OrderController {
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity.ok().build();
     }
-
 }

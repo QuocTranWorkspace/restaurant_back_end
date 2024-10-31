@@ -1,7 +1,6 @@
 package com.example.restaurant.dto.user;
 
 public class LoginDTO {
-
     private String username;
     private String password;
 
@@ -20,5 +19,4 @@ public class LoginDTO {
     public void setPassword(String password) {
         this.password = password;
     }
-
 }

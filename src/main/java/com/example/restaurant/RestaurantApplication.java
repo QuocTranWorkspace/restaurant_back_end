@@ -12,9 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 		"com.example.restaurant.utils"
 })
 public class RestaurantApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(RestaurantApplication.class, args);
 	}
-
 }

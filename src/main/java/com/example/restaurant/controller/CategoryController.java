@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
-
     private final CategoryService categoryService;
 
     public CategoryController(CategoryService categoryService) {
@@ -25,5 +24,4 @@ public class CategoryController {
         List<CategoryEntity> categories = categoryService.findAll();
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", categories));
     }
-
 }

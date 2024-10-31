@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class OrderService extends BaseService<OrderEntity> {
-
     private final OrderRepository orderRepository;
 
     public OrderService(OrderRepository orderRepository) {
@@ -21,5 +20,4 @@ public class OrderService extends BaseService<OrderEntity> {
     public OrderEntity findByCode(String code) {
         return orderRepository.findByCode(code);
     }
-
 }

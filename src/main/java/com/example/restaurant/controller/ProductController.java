@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/product")
 public class ProductController {
-
     private final ProductService productService;
 
     public ProductController(ProductService productService) {
@@ -25,5 +24,4 @@ public class ProductController {
         List<ProductEntity> productList = productService.findAll();
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", productList));
     }
-
 }

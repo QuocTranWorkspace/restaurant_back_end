@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CategoryService extends BaseService<CategoryEntity> {
-
     private final CategoryRepository categoryRepository;
 
     public CategoryService(CategoryRepository categoryRepository) {
@@ -21,5 +20,4 @@ public class CategoryService extends BaseService<CategoryEntity> {
     public CategoryEntity findByCategoryName(String categoryName) {
         return categoryRepository.findByCategoryName(categoryName);
     }
-
 }

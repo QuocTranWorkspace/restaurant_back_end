@@ -3,7 +3,6 @@ package com.example.restaurant.model;
 import java.util.List;
 
 public class PagerData<E extends BaseEntity> {
-
     // Data list
     private List<E> data;
 
@@ -47,5 +46,4 @@ public class PagerData<E extends BaseEntity> {
     public void setSizeOfPage(int sizeOfPage) {
         this.sizeOfPage = sizeOfPage;
     }
-
 }

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserDetailServiceImpl implements UserDetailsService {
-
     private final UserService userService;
 
     public UserDetailServiceImpl(UserService userService) {
@@ -23,5 +22,4 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }
         return user;
     }
-
 }

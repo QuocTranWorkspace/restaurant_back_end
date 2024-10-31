@@ -8,7 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 public class MVCConfig implements WebMvcConfigurer {
-
     public MVCConfig() {
         super();
     }
@@ -22,5 +21,4 @@ public class MVCConfig implements WebMvcConfigurer {
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowCredentials(true).allowedHeaders("*");
     }
-
 }

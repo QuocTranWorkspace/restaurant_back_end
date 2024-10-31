@@ -7,14 +7,13 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tbl_user_role")
 public class UserRole extends BaseEntity {
-
     @Column(name = "user_id", nullable = false)
     private Integer userId;
 
     @Column(name = "role_id", nullable = false)
     private Integer roleId;
 
-    public Integer getuserId() {
+    public Integer getUserId() {
         return userId;
     }
 

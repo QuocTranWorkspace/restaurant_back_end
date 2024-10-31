@@ -8,7 +8,6 @@ import java.util.Set;
 @Entity
 @Table(name = "tbl_order")
 public class OrderEntity extends BaseEntity {
-
     @Column(name = "code")
     private String code;
 
@@ -95,5 +94,4 @@ public class OrderEntity extends BaseEntity {
     public void setOrderProducts(Set<OrderProductEntity> orderProducts) {
         this.orderProducts = orderProducts;
     }
-
 }
