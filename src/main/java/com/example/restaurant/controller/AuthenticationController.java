@@ -48,14 +48,15 @@ public class AuthenticationController {
         try {
             UserEntity user = userService.findByUserName(reqUser.getUsername());
 
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(reqUser.getUsername(),
-                            reqUser.getPassword(), user.getAuthorities()));
+            if (Objects.nonNull(user)) {
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(reqUser.getUsername(),
+                                reqUser.getPassword(), user.getAuthorities()));
 
-            response = userService.login(reqUser);
+                response = userService.login(reqUser);
 
-            return ResponseEntity.ok(response); // Send token in the response body
-
+                return ResponseEntity.ok(response);
+            } else return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
@@ -74,7 +75,6 @@ public class AuthenticationController {
             if (Boolean.TRUE.equals(user.getStatus())) {
                 UserDTO userResponse = new UserDTO();
                 userService.createUserDTO(userResponse, user);
-                System.out.println("yahalo" + userResponse.getUserName());
                 return ResponseEntity.ok(userResponse);
             }
         }

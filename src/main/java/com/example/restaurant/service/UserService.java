@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 @Service
 public class UserService extends BaseService<UserEntity> {
@@ -50,7 +51,6 @@ public class UserService extends BaseService<UserEntity> {
         // Default role
         RoleEntity role = roleService.findByRoleName(roleName);
 
-        // Create new user instance
         UserEntity userSave = new UserEntity();
         userSave.setUserName(signUpData.getUsername());
         userSave.setPassword(new BCryptPasswordEncoder(4).encode(signUpData.getPassword()));
@@ -66,7 +66,6 @@ public class UserService extends BaseService<UserEntity> {
         ur.setUserId(userSave.getId());
         userRoleService.saveOrUpdate(ur);
 
-        // Response data
         UserDTO userResponse = new UserDTO();
         createUserDTO(userResponse, userSave);
 
@@ -107,27 +106,20 @@ public class UserService extends BaseService<UserEntity> {
     }
 
     public UserDTO bindingUserData(UserEntity userEntity, UserDTO userDTO) {
-        if (userDTO.getUserName() != null && !userDTO.getUserName().isEmpty()) {
-            userEntity.setUserName(userDTO.getUserName());
+        updateIfNotEmpty(userDTO.getUserName(), userEntity::setUserName);
+        updateIfNotEmpty(userDTO.getFirstName(), userEntity::setFirstName);
+        updateIfNotEmpty(userDTO.getLastName(), userEntity::setLastName);
+        updateIfNotEmpty(userDTO.getEmail(), userEntity::setEmail);
+        updateIfNotEmpty(userDTO.getPhone(), userEntity::setPhone);
+        updateIfNotEmpty(userDTO.getAddress(), userEntity::setAddress);
+
+        return userDTO;
+    }
+
+    private void updateIfNotEmpty(String fieldValue, Consumer<String> setter) {
+        if (fieldValue != null && !fieldValue.isEmpty()) {
+            setter.accept(fieldValue);
         }
-        if (userDTO.getFirstName() != null && !userDTO.getFirstName().isEmpty()) {
-            userEntity.setFirstName(userDTO.getFirstName());
-        }
-        if (userDTO.getLastName() != null && !userDTO.getLastName().isEmpty()) {
-            userEntity.setLastName(userDTO.getLastName());
-        }
-        if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty()) {
-            userEntity.setEmail(userDTO.getEmail());
-        }
-        if (userDTO.getPhone() != null && !userDTO.getPhone().isEmpty()) {
-            userEntity.setPhone(userDTO.getPhone());
-        }
-        if (userDTO.getAddress() != null && userDTO.getAddress().isEmpty()) {
-            userEntity.setAddress(userDTO.getAddress());
-        }
-        UserDTO userResponse = new UserDTO();
-        createUserDTO(userResponse, userEntity);
-        return userResponse;
     }
 
 }

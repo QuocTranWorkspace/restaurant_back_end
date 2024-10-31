@@ -7,6 +7,7 @@ import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.service.RoleService;
 import com.example.restaurant.service.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class UserController {
     }
 
     @GetMapping("/roleList")
-    public ResponseEntity<ResponseDTO> getMethodName() {
+    public ResponseEntity<ResponseDTO> getRoleList() {
         List<RoleEntity> roleList = roleService.findAll();
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", roleList));
     }
@@ -55,13 +56,25 @@ public class UserController {
     }
 
     @PostMapping("/{userId}")
-    public ResponseEntity<ResponseDTO> updateUser(@PathVariable("userId") String id, @RequestBody UserDTO user) {
+    public ResponseEntity<ResponseDTO> createUser(@PathVariable("userId") String id, @RequestBody UserDTO user) {
         UserEntity userUpdate = userService.getById(Integer.parseInt(id));
         UserDTO userResponse = null;
         if (Objects.nonNull(userUpdate) && !Objects.isNull(user)) {
             userResponse = userService.bindingUserData(userUpdate, user);
             userUpdate.setUpdatedDate(new Date());
             userService.saveOrUpdate(userUpdate);
+        }
+        return ResponseEntity.ok(new ResponseDTO(200, "update ok", userResponse));
+    }
+
+    @PostMapping("/addUser")
+    public ResponseEntity<ResponseDTO> createUser(@RequestBody UserDTO user) {
+        UserEntity userEntity = new UserEntity();
+        UserDTO userResponse = null;
+        if (Objects.nonNull(user)) {
+            userResponse = userService.bindingUserData(userEntity, user);
+            userEntity.setPassword(new BCryptPasswordEncoder(4).encode("Abc@123"));
+            userService.saveOrUpdate(userEntity);
         }
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", userResponse));
     }
