@@ -28,7 +28,6 @@ public class RoleController {
     @GetMapping("/{roleId}")
     public ResponseEntity<ResponseDTO> getUser(@PathVariable("roleId") String roleId) {
         RoleEntity role = roleService.getById(Integer.parseInt(roleId));
-        System.out.println("hehe" + role);
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", role));
     }
 
@@ -53,5 +52,13 @@ public class RoleController {
             roleService.saveOrUpdate(roleEntity);
         }
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", roleResponse));
+    }
+
+    @PostMapping("/deleteRole/{roleId}")
+    public ResponseEntity<ResponseDTO> deleteRole(@PathVariable("roleId") String id) {
+        RoleEntity role = roleService.getById(Integer.parseInt(id));
+        role.setStatus(false);
+        roleService.saveOrUpdate(role);
+        return ResponseEntity.ok(new ResponseDTO(200, "deleted", role));
     }
 }

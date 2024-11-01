@@ -78,4 +78,14 @@ public class UserController {
         }
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", userResponse));
     }
+
+    @PostMapping("/deleteUser/{userId}")
+    public ResponseEntity<ResponseDTO> deleteUser(@PathVariable("userId") String id) {
+        UserEntity user = userService.getById(Integer.parseInt(id));
+        user.setStatus(false);
+        userService.saveOrUpdate(user);
+        UserDTO userResponse = new UserDTO();
+        userService.createUserDTO(userResponse, user);
+        return ResponseEntity.ok(new ResponseDTO(200, "deleted", userResponse));
+    }
 }
