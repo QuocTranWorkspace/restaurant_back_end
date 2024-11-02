@@ -6,9 +6,15 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * The type Mvc config.
+ */
 @Configuration
 @EnableWebMvc
 public class MVCConfig implements WebMvcConfigurer {
+    /**
+     * Instantiates a new Mvc config.
+     */
     public MVCConfig() {
         super();
     }

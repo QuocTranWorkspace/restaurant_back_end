@@ -1,18 +1,21 @@
 package com.example.restaurant.service;
 
-import com.example.restaurant.dto.user.UserDTO;
 import com.example.restaurant.model.OrderEntity;
-import com.example.restaurant.model.RoleEntity;
-import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.function.Consumer;
-
+/**
+ * The type Order service.
+ */
 @Service
 public class OrderService extends BaseService<OrderEntity> {
     private final OrderRepository orderRepository;
 
+    /**
+     * Instantiates a new Order service.
+     *
+     * @param orderRepository the order repository
+     */
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
@@ -22,10 +25,23 @@ public class OrderService extends BaseService<OrderEntity> {
         return OrderEntity.class;
     }
 
+    /**
+     * Find by code order entity.
+     *
+     * @param code the code
+     * @return the order entity
+     */
     public OrderEntity findByCode(String code) {
         return orderRepository.findByCode(code);
     }
 
+    /**
+     * Binding order data order entity.
+     *
+     * @param orderUpdate the order update
+     * @param orderGet    the order get
+     * @return the order entity
+     */
     public OrderEntity bindingOrderData(OrderEntity orderUpdate, OrderEntity orderGet) {
         updateIfNotEmpty(orderGet.getCode(), orderUpdate::setCode);
         orderUpdate.setTotalPrice(orderGet.getTotalPrice());

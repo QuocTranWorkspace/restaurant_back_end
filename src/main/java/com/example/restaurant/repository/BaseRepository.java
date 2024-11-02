@@ -8,6 +8,11 @@ import org.springframework.lang.NonNull;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The interface Base repository.
+ *
+ * @param <E> the type parameter
+ */
 @NoRepositoryBean
 public interface BaseRepository<E extends BaseEntity> extends JpaRepository<E, Long> {
     // Common method to find by ID with Optional return type

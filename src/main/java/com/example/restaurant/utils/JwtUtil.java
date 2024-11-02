@@ -15,18 +15,33 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+/**
+ * The type Jwt util.
+ */
 @Component
 public class JwtUtil {
 
     private final SecretKey key;
     private final int jwtExprirationInMs;
 
+    /**
+     * Instantiates a new Jwt util.
+     *
+     * @param secret             the secret
+     * @param jwtExprirationInMs the jwt expriration in ms
+     */
     public JwtUtil(@Value("${jwt.secret}") String secret, @Value("${jwt.ExpirationInMs}") int jwtExprirationInMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
         this.jwtExprirationInMs = jwtExprirationInMs;
     }
 
-    // TODO:
+    /**
+     * Generate token string.
+     *
+     * @param user the user
+     * @return the string
+     */
+// TODO:
     public String generateToken(UserEntity user) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, user.getUsername());
@@ -42,28 +57,67 @@ public class JwtUtil {
                 .compact();
     }
 
+    /**
+     * Extract all claims claims.
+     *
+     * @param token the token
+     * @return the claims
+     */
     public Claims extractAllClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
     }
 
+    /**
+     * Extract username string.
+     *
+     * @param token the token
+     * @return the string
+     */
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
+    /**
+     * Extract expiration date.
+     *
+     * @param token the token
+     * @return the date
+     */
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    /**
+     * Extract claim t.
+     *
+     * @param <T>            the type parameter
+     * @param token          the token
+     * @param claimsResolver the claims resolver
+     * @return the t
+     */
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
-    // TODO:
+    /**
+     * Is token expired boolean.
+     *
+     * @param token the token
+     * @return the boolean
+     */
+// TODO:
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
+    /**
+     * Validate token boolean.
+     *
+     * @param token       the token
+     * @param userDetails the user details
+     * @return the boolean
+     */
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));

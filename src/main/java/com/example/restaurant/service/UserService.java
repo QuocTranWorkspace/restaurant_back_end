@@ -17,8 +17,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
+/**
+ * The type User service.
+ */
 @Service
 public class UserService extends BaseService<UserEntity> {
     private final UserRepository userRepository;
@@ -26,8 +28,16 @@ public class UserService extends BaseService<UserEntity> {
     private final RoleService roleService;
     private final JwtUtil jwtUtil;
 
+    /**
+     * Instantiates a new User service.
+     *
+     * @param userRepository  the user repository
+     * @param userRoleService the user role service
+     * @param jwtUtil         the jwt util
+     * @param roleService     the role service
+     */
     public UserService(UserRepository userRepository, UserRoleService userRoleService, JwtUtil jwtUtil,
-            RoleService roleService) {
+                       RoleService roleService) {
         this.userRepository = userRepository;
         this.userRoleService = userRoleService;
         this.jwtUtil = jwtUtil;
@@ -39,10 +49,23 @@ public class UserService extends BaseService<UserEntity> {
         return UserEntity.class;
     }
 
+    /**
+     * Find by user name user entity.
+     *
+     * @param userName the user name
+     * @return the user entity
+     */
     public UserEntity findByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
 
+    /**
+     * Register response dto.
+     *
+     * @param signUpData the sign up data
+     * @param roleName   the role name
+     * @return the response dto
+     */
     @Transactional
     public ResponseDTO register(SignUpDTO signUpData, String roleName) {
         if (Objects.nonNull(this.findByUserName(signUpData.getUsername()))) {
@@ -73,6 +96,12 @@ public class UserService extends BaseService<UserEntity> {
         return new ResponseDTO(200, "Registered successful", userResponse);
     }
 
+    /**
+     * Login response dto.
+     *
+     * @param loginData the login data
+     * @return the response dto
+     */
     public ResponseDTO login(LoginDTO loginData) {
         // Find user
         UserEntity user = this.findByUserName(loginData.getUsername());
@@ -91,6 +120,12 @@ public class UserService extends BaseService<UserEntity> {
         return new ResponseDTO(200, "Logged in successful", token);
     }
 
+    /**
+     * Create user dto.
+     *
+     * @param userDTO    the user dto
+     * @param userEntity the user entity
+     */
     public void createUserDTO(UserDTO userDTO, UserEntity userEntity) {
         userDTO.setId(userEntity.getId());
         userDTO.setUserName(userEntity.getUsername());
@@ -100,12 +135,19 @@ public class UserService extends BaseService<UserEntity> {
         userDTO.setPhone(userEntity.getPhone());
         userDTO.setAddress(userEntity.getAddress());
         List<String> tempRoles = new ArrayList<>();
-        for (RoleEntity role: userEntity.getRoles()) {
+        for (RoleEntity role : userEntity.getRoles()) {
             tempRoles.add(role.getRoleName());
         }
         userDTO.setRoles(tempRoles);
     }
 
+    /**
+     * Binding user data user dto.
+     *
+     * @param userEntity the user entity
+     * @param userDTO    the user dto
+     * @return the user dto
+     */
     public UserDTO bindingUserData(UserEntity userEntity, UserDTO userDTO) {
         updateIfNotEmpty(userDTO.getUserName(), userEntity::setUserName);
         updateIfNotEmpty(userDTO.getFirstName(), userEntity::setFirstName);
@@ -114,7 +156,7 @@ public class UserService extends BaseService<UserEntity> {
         updateIfNotEmpty(userDTO.getPhone(), userEntity::setPhone);
         updateIfNotEmpty(userDTO.getAddress(), userEntity::setAddress);
 
-        for (String role: userDTO.getRoles()) {
+        for (String role : userDTO.getRoles()) {
             RoleEntity roleSave = roleService.findByRoleName(role);
             userEntity.addRole(roleSave);
         }

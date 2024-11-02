@@ -10,32 +10,63 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The type Order controller.
+ */
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
     private final OrderService orderService;
 
+    /**
+     * Instantiates a new Order controller.
+     *
+     * @param orderService the order service
+     */
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
+    /**
+     * Gets all order.
+     *
+     * @return the all order
+     */
     @GetMapping("/orderList")
     public ResponseEntity<ResponseDTO> getAllOrder() {
         List<OrderEntity> orderList = orderService.findAll();
         return ResponseEntity.ok(new ResponseDTO(200, "orderList", orderList));
     }
 
+    /**
+     * Handle options response entity.
+     *
+     * @return the response entity
+     */
     @RequestMapping(value = "/**", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Gets order.
+     *
+     * @param orderId the order id
+     * @return the order
+     */
     @GetMapping("/{orderId}")
     public ResponseEntity<ResponseDTO> getOrder(@PathVariable("orderId") String orderId) {
         OrderEntity order = orderService.getById(Integer.parseInt(orderId));
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", order));
     }
 
+    /**
+     * Update order response entity.
+     *
+     * @param id    the id
+     * @param order the order
+     * @return the response entity
+     */
     @PostMapping("/{orderId}")
     public ResponseEntity<ResponseDTO> updateOrder(@PathVariable("orderId") String id, @RequestBody OrderEntity order) {
         OrderEntity orderUpdate = orderService.getById(Integer.parseInt(id));
@@ -48,6 +79,12 @@ public class OrderController {
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", orderResponse));
     }
 
+    /**
+     * Create order response entity.
+     *
+     * @param order the order
+     * @return the response entity
+     */
     @PostMapping("/addOrder")
     public ResponseEntity<ResponseDTO> createOrder(@RequestBody OrderEntity order) {
         OrderEntity orderEntity = new OrderEntity();
@@ -59,6 +96,12 @@ public class OrderController {
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", orderResponse));
     }
 
+    /**
+     * Delete order response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @PostMapping("/deleteOrder/{orderId}")
     public ResponseEntity<ResponseDTO> deleteOrder(@PathVariable("orderId") String id) {
         OrderEntity order = orderService.getById(Integer.parseInt(id));

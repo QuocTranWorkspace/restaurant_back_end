@@ -10,23 +10,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 
+/**
+ * The type Test controller.
+ */
 @Controller
 @RequestMapping("api/auth")
 public class testController {
-    @GetMapping({ "/", "/home" })
+    /**
+     * Res response entity.
+     *
+     * @param model    the model
+     * @param request  the request
+     * @param response the response
+     * @return the response entity
+     * @throws IOException the io exception
+     */
+    @GetMapping({"/", "/home"})
     public ResponseEntity<String> res(final Model model, final HttpServletRequest request,
-            final HttpServletResponse response)
+                                      final HttpServletResponse response)
             throws IOException {
         return ResponseEntity.ok("hello");
     }
 
-    @GetMapping({ "/home1" })
+    /**
+     * Res 1 string.
+     *
+     * @param model    the model
+     * @param request  the request
+     * @param response the response
+     * @return the string
+     * @throws IOException the io exception
+     */
+    @GetMapping({"/home1"})
     public String res1(final Model model, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         return "user/index1";
     }
 
-    @GetMapping({ "admin/hello" })
+    /**
+     * Resad string.
+     *
+     * @param model    the model
+     * @param request  the request
+     * @param response the response
+     * @return the string
+     * @throws IOException the io exception
+     */
+    @GetMapping({"admin/hello"})
     public String resad(final Model model, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         return "admin/index";

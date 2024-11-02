@@ -16,6 +16,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * The type Base service.
+ *
+ * @param <E> the type parameter
+ */
 @Service
 public abstract class BaseService<E extends BaseEntity> {
     private static final Logger log = LoggerFactory.getLogger(BaseService.class);
@@ -23,13 +28,18 @@ public abstract class BaseService<E extends BaseEntity> {
     @PersistenceContext
     private EntityManager entityManager;
 
+    /**
+     * Clazz class.
+     *
+     * @return the class
+     */
     protected abstract Class<E> clazz();
 
     /**
      * Execute save or update the entity
      *
      * @param entity entity
-     * @return entity
+     * @return entity e
      */
     @Transactional
     public E saveOrUpdate(E entity) {
@@ -79,7 +89,7 @@ public abstract class BaseService<E extends BaseEntity> {
      *
      * @param sql  query_string
      * @param page page
-     * @return result
+     * @return result entities by native sql
      */
     @SuppressWarnings("unchecked")
     public PagerData<E> getEntitiesByNativeSQL(String sql, int page) {
@@ -109,6 +119,12 @@ public abstract class BaseService<E extends BaseEntity> {
         return result;
     }
 
+    /**
+     * Gets entity by native sql.
+     *
+     * @param sql the sql
+     * @return the entity by native sql
+     */
     public E getEntityByNativeSQL(String sql) {
         try {
             return getEntitiesByNativeSQL(sql).get(0);
@@ -118,6 +134,12 @@ public abstract class BaseService<E extends BaseEntity> {
         return null;
     }
 
+    /**
+     * Gets entities by native sql.
+     *
+     * @param sql the sql
+     * @return the entities by native sql
+     */
     @SuppressWarnings("unchecked")
     public List<E> getEntitiesByNativeSQL(String sql) {
         List<E> result = new ArrayList<>();
@@ -132,6 +154,12 @@ public abstract class BaseService<E extends BaseEntity> {
         return result;
     }
 
+    /**
+     * Update if not empty.
+     *
+     * @param fieldValue the field value
+     * @param setter     the setter
+     */
     public void updateIfNotEmpty(String fieldValue, Consumer<String> setter) {
         if (fieldValue != null && !fieldValue.isEmpty()) {
             setter.accept(fieldValue);

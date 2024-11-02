@@ -18,26 +18,51 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
 
+/**
+ * The type Authentication controller.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
     private final UserService userService;
     private AuthenticationManager authenticationManager;
 
+    /**
+     * Instantiates a new Authentication controller.
+     *
+     * @param userService the user service
+     */
+    public AuthenticationController(UserService userService) {
+        this.userService = userService;
+    }
+
+    /**
+     * Sets authentication manager.
+     *
+     * @param authenticationManager the authentication manager
+     */
     @Autowired
     public void setAuthenticationManager(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
     }
 
-    public AuthenticationController(UserService userService) {
-        this.userService = userService;
-    }
-
+    /**
+     * Signup user response dto.
+     *
+     * @param user the user
+     * @return the response dto
+     */
     @PostMapping("/register")
     public ResponseDTO signupUser(@RequestBody SignUpDTO user) {
         return userService.register(user, "USER");
     }
 
+    /**
+     * Login user response entity.
+     *
+     * @param reqUser the req user
+     * @return the response entity
+     */
     @PostMapping("/login")
     public ResponseEntity<ResponseDTO> loginUser(@RequestBody LoginDTO reqUser) {
         ResponseDTO response = null;
@@ -58,11 +83,21 @@ public class AuthenticationController {
         }
     }
 
+    /**
+     * Handle options response entity.
+     *
+     * @return the response entity
+     */
     @RequestMapping(value = "/login", method = RequestMethod.OPTIONS)
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Gets method name.
+     *
+     * @return the method name
+     */
     @GetMapping("/userAuthenticated")
     public ResponseEntity<UserDTO> getMethodName() {
         Object userAuthenticated = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -77,6 +112,12 @@ public class AuthenticationController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
     }
 
+    /**
+     * Validate username response entity.
+     *
+     * @param username the username
+     * @return the response entity
+     */
     @GetMapping("/validateUsername/{username}")
     public ResponseEntity<ResponseDTO> validateUsername(@PathVariable String username) {
         UserEntity user = userService.findByUserName(username);

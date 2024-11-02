@@ -13,10 +13,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+/**
+ * The type Product service.
+ */
 @Service
 public class ProductService extends BaseService<ProductEntity> {
     private final ProductRepository productRepository;
 
+    /**
+     * Instantiates a new Product service.
+     *
+     * @param productRepository the product repository
+     */
     public ProductService(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -26,10 +34,23 @@ public class ProductService extends BaseService<ProductEntity> {
         return ProductEntity.class;
     }
 
+    /**
+     * Find by product name product entity.
+     *
+     * @param productName the product name
+     * @return the product entity
+     */
     public ProductEntity findByProductName(String productName) {
         return productRepository.findByProductName(productName);
     }
 
+    /**
+     * Binding product data product entity.
+     *
+     * @param productUpdate the product update
+     * @param productGet    the product get
+     * @return the product entity
+     */
     public ProductEntity bindingProductData(ProductEntity productUpdate, ProductEntity productGet) {
         updateIfNotEmpty(productGet.getProductName(), productUpdate::setProductName);
         updateIfNotEmpty(productGet.getProductDescription(), productUpdate::setProductDescription);
@@ -51,6 +72,12 @@ public class ProductService extends BaseService<ProductEntity> {
         return splitFileName[0] + System.currentTimeMillis() + "." + splitFileName[1];
     }
 
+    /**
+     * Save product.
+     *
+     * @param product       the product
+     * @param productAvatar the product avatar
+     */
     @SneakyThrows
     @Transactional
     public void saveProduct(ProductEntity product, MultipartFile productAvatar) {
@@ -64,6 +91,12 @@ public class ProductService extends BaseService<ProductEntity> {
         super.saveOrUpdate(product);
     }
 
+    /**
+     * Update product.
+     *
+     * @param p             the p
+     * @param productAvatar the product avatar
+     */
     @SneakyThrows
     @Transactional
     public void updateProduct(ProductEntity p, MultipartFile productAvatar) {

@@ -15,58 +15,80 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * The type Security config.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                return http
-                                .csrf(AbstractHttpConfigurer::disable)
-                                .authorizeHttpRequests(auth -> auth
-                                                // Allow all requests to home view
-                                                .requestMatchers("/api/auth/**", "/api/**", "/home")
-                                                .permitAll()
-                                                // Allow all static resources requests
-                                                .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
-                                                .permitAll()
-                                                .requestMatchers("/admin/**")
-                                                .hasAnyRole("ADMIN"))
-                                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailService),
-                                                UsernamePasswordAuthenticationFilter.class)
-                                .build();
-        }
+    /*
+     * Spring will automatically wire the dependencies if there is only one
+     * constructor in the class.
+     * This is often preferred because it makes the dependency explicit and avoids
+     * some of the issues that can arise with field injection.
+     */
+    private final UserDetailServiceImpl userDetailService;
+    private final JwtUtil jwtUtil;
 
-        /*
-         * Spring will automatically wire the dependencies if there is only one
-         * constructor in the class.
-         * This is often preferred because it makes the dependency explicit and avoids
-         * some of the issues that can arise with field injection.
-         */
-        private final UserDetailServiceImpl userDetailService;
-        private final JwtUtil jwtUtil;
+    /**
+     * Instantiates a new Security config.
+     *
+     * @param userDetailService the user detail service
+     * @param jwtUtil           the jwt util
+     */
+// @Autowired
+    public SecurityConfig(@Lazy UserDetailServiceImpl userDetailService, JwtUtil jwtUtil) {
+        this.userDetailService = userDetailService;
+        this.jwtUtil = jwtUtil;
+    }
 
-        // @Autowired
-        public SecurityConfig(@Lazy UserDetailServiceImpl userDetailService, JwtUtil jwtUtil) {
-                this.userDetailService = userDetailService;
-                this.jwtUtil = jwtUtil;
-        }
+    /**
+     * Security filter chain security filter chain.
+     *
+     * @param http the http
+     * @return the security filter chain
+     * @throws Exception the exception
+     */
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        // Allow all requests to home view
+                        .requestMatchers("/api/auth/**", "/api/**", "/home")
+                        .permitAll()
+                        // Allow all static resources requests
+                        .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
+                        .permitAll()
+                        .requestMatchers("/admin/**")
+                        .hasAnyRole("ADMIN"))
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailService),
+                        UsernamePasswordAuthenticationFilter.class)
+                .build();
+    }
 
-        public PasswordEncoder passwordEncoder() {
-                return new BCryptPasswordEncoder(4);
-        }
+    /**
+     * Password encoder password encoder.
+     *
+     * @return the password encoder
+     */
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(4);
+    }
 
-        /**
-         * Service configuration and password encode algorithm
-         *
-         * @param auth auth
-         * @throws Exception e
-         */
-        @Bean
-        public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-                AuthenticationManagerBuilder authenticationManagerBuilder = http
-                                .getSharedObject(AuthenticationManagerBuilder.class);
-                authenticationManagerBuilder.userDetailsService(userDetailService)
-                                .passwordEncoder(passwordEncoder());
-                return authenticationManagerBuilder.build();
-        }
+    /**
+     * Service configuration and password encode algorithm
+     *
+     * @param http the http
+     * @return the authentication manager
+     * @throws Exception e
+     */
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                .getSharedObject(AuthenticationManagerBuilder.class);
+        authenticationManagerBuilder.userDetailsService(userDetailService)
+                .passwordEncoder(passwordEncoder());
+        return authenticationManagerBuilder.build();
+    }
 }
