@@ -121,10 +121,4 @@ public class UserService extends BaseService<UserEntity> {
 
         return userDTO;
     }
-
-    private void updateIfNotEmpty(String fieldValue, Consumer<String> setter) {
-        if (fieldValue != null && !fieldValue.isEmpty()) {
-            setter.accept(fieldValue);
-        }
-    }
 }

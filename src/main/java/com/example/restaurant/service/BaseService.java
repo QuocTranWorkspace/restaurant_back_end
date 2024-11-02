@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Service
 public abstract class BaseService<E extends BaseEntity> {
@@ -129,5 +130,11 @@ public abstract class BaseService<E extends BaseEntity> {
         }
 
         return result;
+    }
+
+    public void updateIfNotEmpty(String fieldValue, Consumer<String> setter) {
+        if (fieldValue != null && !fieldValue.isEmpty()) {
+            setter.accept(fieldValue);
+        }
     }
 }

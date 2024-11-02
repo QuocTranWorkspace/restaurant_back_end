@@ -29,10 +29,4 @@ public class RoleService extends BaseService<RoleEntity> {
 
         return roleEntity;
     }
-
-    private void updateIfNotEmpty(String fieldValue, Consumer<String> setter) {
-        if (fieldValue != null && !fieldValue.isEmpty()) {
-            setter.accept(fieldValue);
-        }
-    }
 }

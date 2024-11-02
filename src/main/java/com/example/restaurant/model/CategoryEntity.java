@@ -18,7 +18,6 @@ public class CategoryEntity extends BaseEntity {
     @Column(name = "category_description")
     private String categoryDescription;
 
-    @JsonManagedReference
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "category")
     private Set<ProductEntity> products = new HashSet<>();
 

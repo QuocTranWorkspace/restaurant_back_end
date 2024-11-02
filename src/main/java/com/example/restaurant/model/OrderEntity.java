@@ -1,5 +1,8 @@
 package com.example.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -7,6 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tbl_order")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "code")
 public class OrderEntity extends BaseEntity {
     @Column(name = "code")
     private String code;

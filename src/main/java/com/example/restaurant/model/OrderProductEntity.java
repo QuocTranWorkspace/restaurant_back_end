@@ -14,7 +14,7 @@ public class OrderProductEntity extends BaseEntity {
     private ProductEntity product;
 
     @Column(name = "quantity")
-    private int quantiy;
+    private int quantity;
 
     public OrderEntity getOrder() {
         return order;
@@ -32,11 +32,11 @@ public class OrderProductEntity extends BaseEntity {
         this.product = product;
     }
 
-    public int getQuantiy() {
-        return quantiy;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setQuantiy(int quantiy) {
-        this.quantiy = quantiy;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
