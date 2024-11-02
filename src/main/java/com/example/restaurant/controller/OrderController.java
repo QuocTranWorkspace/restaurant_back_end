@@ -2,10 +2,8 @@ package com.example.restaurant.controller;
 
 import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.model.OrderEntity;
-import com.example.restaurant.model.RoleEntity;
 import com.example.restaurant.service.OrderService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -31,7 +29,6 @@ public class OrderController {
     public ResponseEntity<Void> handleOptions() {
         return ResponseEntity.ok().build();
     }
-
 
     @GetMapping("/{orderId}")
     public ResponseEntity<ResponseDTO> getOrder(@PathVariable("orderId") String orderId) {
