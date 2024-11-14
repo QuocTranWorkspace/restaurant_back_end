@@ -1,8 +1,12 @@
 package com.example.restaurant.service;
 
+import com.example.restaurant.model.CategoryEntity;
 import com.example.restaurant.model.OrderEntity;
+import com.example.restaurant.model.ProductEntity;
 import com.example.restaurant.repository.OrderRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * The type Order service.
@@ -51,5 +55,15 @@ public class OrderService extends BaseService<OrderEntity> {
         updateIfNotEmpty(orderGet.getCustomerAddress(), orderUpdate::setCustomerAddress);
 
         return orderGet;
+    }
+
+    public List<OrderEntity> searchOrder(String userId) {
+        String sql = "SELECT * FROM tbl_order p WHERE 1=1";
+
+        if (!userId.isEmpty()) {
+            sql += " and user_id = " + Integer.parseInt(userId);
+        }
+
+        return super.getEntitiesByNativeSQL(sql);
     }
 }

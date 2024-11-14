@@ -187,4 +187,10 @@ public class OrderController {
 
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", orderInDB));
     }
+
+    @GetMapping("/orderList/{userId}")
+    public ResponseEntity<ResponseDTO> getOrderByUser(@PathVariable("userId") String userId) {
+        List<OrderEntity> orderList = orderService.searchOrder(userId);
+        return ResponseEntity.ok(new ResponseDTO(200, "get ok", orderList));
+    }
 }
