@@ -1,5 +1,6 @@
 package com.example.restaurant.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -12,11 +13,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 @EnableWebMvc
 public class MVCConfig implements WebMvcConfigurer {
+    private final String filePath;
     /**
      * Instantiates a new Mvc config.
      */
-    public MVCConfig() {
+    public MVCConfig(@Value("${file.path}")String filePath) {
         super();
+        this.filePath = filePath;
     }
 
     @SuppressWarnings("null")
@@ -32,6 +35,8 @@ public class MVCConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/upload/product/avatar/**").addResourceLocations("file:" + "D:/CAGL/CodeForMoney/project_restaurant/upload/product/avatar/");
+        registry
+                .addResourceHandler("/upload/product/avatar/**")
+                .addResourceLocations("file:" + filePath);
     }
 }

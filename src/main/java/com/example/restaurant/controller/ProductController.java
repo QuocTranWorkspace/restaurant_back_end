@@ -117,4 +117,10 @@ public class ProductController {
         productService.bindingProductData(productUpdate, productResponse);
         return ResponseEntity.ok(new ResponseDTO(200, "deleted", productResponse));
     }
+
+    @GetMapping("/productList/{categoryName}")
+    public ResponseEntity<ResponseDTO> getFilteredProductList(@PathVariable("categoryName") String category) {
+        List<ProductEntity> productList = productService.searchProduct(category);
+        return ResponseEntity.ok(new ResponseDTO(200, "get ok", productList));
+    }
 }

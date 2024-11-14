@@ -1,5 +1,7 @@
 package com.example.restaurant.service;
 
+import com.example.restaurant.model.CategoryEntity;
+import com.example.restaurant.model.PagerData;
 import com.example.restaurant.model.ProductEntity;
 import com.example.restaurant.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -11,6 +13,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,14 +22,16 @@ import java.util.Objects;
 @Service
 public class ProductService extends BaseService<ProductEntity> {
     private final ProductRepository productRepository;
+    private CategoryService categoryService;
 
     /**
      * Instantiates a new Product service.
      *
      * @param productRepository the product repository
      */
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService) {
         this.productRepository = productRepository;
+        this.categoryService =  categoryService;
     }
 
     @Override
@@ -119,5 +124,19 @@ public class ProductService extends BaseService<ProductEntity> {
         }
 
         super.saveOrUpdate(p);
+    }
+
+    public List<ProductEntity> searchProduct(String categoryName) {
+        String sql = "SELECT * FROM tbl_product p WHERE 1=1";
+
+        CategoryEntity categoryEntity = categoryService.findByCategoryName(categoryName);
+
+        if (categoryEntity != null) {
+            if (categoryEntity.getId() != 0 && categoryEntity.getId() > 0) {
+                sql += " and category_id = " + categoryEntity.getId();
+            }
+        }
+
+        return super.getEntitiesByNativeSQL(sql);
     }
 }
