@@ -3,6 +3,8 @@ package com.example.restaurant.model;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -14,24 +16,43 @@ import java.util.Set;
 @Table(name = "tbl_order")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "code")
 public class OrderEntity extends BaseEntity {
+    @Setter
+    @Getter
     @Column(name = "code")
     private String code;
 
+    @Setter
+    @Getter
     @Column(name = "total_price", precision = 13, scale = 2, nullable = false)
     private BigDecimal totalPrice;
 
+    @Setter
+    @Getter
     @Column(name = "customer_name")
     private String customerName;
 
+    @Setter
+    @Getter
     @Column(name = "customer_address")
     private String customerAddress;
 
+    @Getter
+    @Setter
     @Column(name = "customer_phone")
     private String customerPhone;
 
+    @Setter
+    @Getter
     @Column(name = "customer_email")
     private String customerEmail;
 
+    @Setter
+    @Getter
+    @Column(name = "user_id")
+    private int userId;
+
+    @Setter
+    @Getter
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
     private Set<OrderProductEntity> orderProducts;
 
@@ -53,131 +74,5 @@ public class OrderEntity extends BaseEntity {
     public void deleteOrderProduct(OrderProductEntity orderProduct) {
         this.orderProducts.remove(orderProduct);
         orderProduct.setOrder(null);
-    }
-
-    /**
-     * Gets code.
-     *
-     * @return the code
-     */
-    public String getCode() {
-        return code;
-    }
-
-    /**
-     * Sets code.
-     *
-     * @param code the code
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    /**
-     * Gets total price.
-     *
-     * @return the total price
-     */
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-    }
-
-    /**
-     * Sets total price.
-     *
-     * @param totalPrice the total price
-     */
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
-    }
-
-    /**
-     * Gets customer name.
-     *
-     * @return the customer name
-     */
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    /**
-     * Sets customer name.
-     *
-     * @param customerName the customer name
-     */
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    /**
-     * Gets customer address.
-     *
-     * @return the customer address
-     */
-    public String getCustomerAddress() {
-        return customerAddress;
-    }
-
-    /**
-     * Sets customer address.
-     *
-     * @param customerAddress the customer address
-     */
-    public void setCustomerAddress(String customerAddress) {
-        this.customerAddress = customerAddress;
-    }
-
-    /**
-     * Gets customer email.
-     *
-     * @return the customer email
-     */
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    /**
-     * Sets customer email.
-     *
-     * @param customerEmail the customer email
-     */
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
-
-    /**
-     * Gets customer phone.
-     *
-     * @return the customer phone
-     */
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    /**
-     * Sets customer phone.
-     *
-     * @param customerPhone the customer phone
-     */
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
-
-    /**
-     * Gets order products.
-     *
-     * @return the order products
-     */
-    public Set<OrderProductEntity> getOrderProducts() {
-        return orderProducts;
-    }
-
-    /**
-     * Sets order products.
-     *
-     * @param orderProducts the order products
-     */
-    public void setOrderProducts(Set<OrderProductEntity> orderProducts) {
-        this.orderProducts = orderProducts;
     }
 }
