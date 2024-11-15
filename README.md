@@ -55,9 +55,14 @@ Replace `<absolute-path-to-upload-folder>` with the full path to the `upload/pro
 file.path=/Users/yourname/project/upload/product/avatar
 ```
 
+### 6. Update origin url (if needed)
+```properties
+origins.url=http://localhost:3001
+```
+
 ---
 
-### 6. Run the Application
+### 7. Run the Application
 Use Maven to build and run the application:
 ```bash
 mvn spring-boot:run
