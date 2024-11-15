@@ -39,6 +39,10 @@ public class OrderService extends BaseService<OrderEntity> {
         return orderRepository.findByCode(code);
     }
 
+    public List<OrderEntity> findAllByCode(String code) {
+        return orderRepository.findAllByCode(code);
+    }
+
     /**
      * Binding order data order entity.
      *
@@ -53,6 +57,7 @@ public class OrderService extends BaseService<OrderEntity> {
         updateIfNotEmpty(orderGet.getCustomerEmail(), orderUpdate::setCustomerEmail);
         updateIfNotEmpty(orderGet.getCustomerPhone(), orderUpdate::setCustomerPhone);
         updateIfNotEmpty(orderGet.getCustomerAddress(), orderUpdate::setCustomerAddress);
+        orderUpdate.setDeliveryStatus(orderGet.getDeliveryStatus());
 
         return orderGet;
     }

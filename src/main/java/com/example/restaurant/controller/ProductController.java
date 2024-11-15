@@ -1,7 +1,9 @@
 package com.example.restaurant.controller;
 
 import com.example.restaurant.dto.ResponseDTO;
+import com.example.restaurant.model.CategoryEntity;
 import com.example.restaurant.model.ProductEntity;
+import com.example.restaurant.service.CategoryService;
 import com.example.restaurant.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +23,7 @@ import java.util.Objects;
 @RequestMapping("/api/product")
 public class ProductController {
     private final ProductService productService;
+    private final CategoryService categoryService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
@@ -28,8 +31,9 @@ public class ProductController {
      *
      * @param productService the product service
      */
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     /**
@@ -88,18 +92,16 @@ public class ProductController {
      * @return the response entity
      * @throws JsonProcessingException the json processing exception
      */
-    @PostMapping(value = "/addOrder", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO> createProduct(@PathVariable("productId") String id,
-                                                     @RequestPart(value = "avatar", required = false) MultipartFile avatar,
+    @PostMapping(value = "/addProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseDTO> createProduct(@RequestPart(value = "category", required = false) String categoryId,
+                                                    @RequestPart(value = "avatar", required = false) MultipartFile avatar,
                                                      @RequestPart("product") String product) throws JsonProcessingException {
-        ProductEntity productUpdate = productService.getById(Integer.parseInt(id));
         ProductEntity productGet = objectMapper.readValue(product, ProductEntity.class);
-        ProductEntity productResponse = null;
-        if (Objects.nonNull(productGet)) {
-            productResponse = productService.bindingProductData(productUpdate, productGet);
-            productService.saveProduct(productUpdate, avatar);
-        }
-        return ResponseEntity.ok(new ResponseDTO(200, "update ok", productResponse));
+        CategoryEntity categoryEntity = categoryService.getById(Integer.parseInt(categoryId));
+        productGet.setCategory(categoryEntity);
+
+        productService.saveProduct(productGet, avatar);
+        return ResponseEntity.ok(new ResponseDTO(200, "update ok", productGet));
     }
 
     /**

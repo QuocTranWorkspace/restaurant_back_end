@@ -7,6 +7,7 @@ CREATE TABLE tbl_order (
     customer_phone VARCHAR(255) NOT NULL,
     customer_address VARCHAR(255) NOT NULL,
     customer_email VARCHAR(255) NOT NULL,
+    delivery_status INT NOT NULL DEFAULT 1,
     status TINYINT(1) DEFAULT 1,
     created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_date DATETIME,

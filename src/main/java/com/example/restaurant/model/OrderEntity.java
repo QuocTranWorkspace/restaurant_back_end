@@ -53,6 +53,11 @@ public class OrderEntity extends BaseEntity {
 
     @Setter
     @Getter
+    @Column(name = "delivery_status")
+    private int deliveryStatus;
+
+    @Setter
+    @Getter
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "order")
     private Set<OrderProductEntity> orderProducts;
 

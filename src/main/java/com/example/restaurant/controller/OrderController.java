@@ -142,7 +142,7 @@ public class OrderController {
             if (userInDB.getPhone() == null && userEntity.getPhone() != null && !userEntity.getPhone().isEmpty()) {
                 userInDB.setPhone(userEntity.getPhone());
             }
-            if (userInDB.getEmail() == null && userEntity.getEmail() != null && !userEntity.getEmail().isEmpty()) {
+            if (userInDB.getAddress() == null && userEntity.getAddress() != null && !userEntity.getAddress().isEmpty()) {
                 userInDB.setAddress(userEntity.getAddress());
             }
             userService.saveOrUpdate(userInDB);
@@ -165,6 +165,7 @@ public class OrderController {
 
         orderSave.setCode(String.valueOf(System.currentTimeMillis()));
         orderSave.setTotalPrice(tempTotal);
+        orderSave.setDeliveryStatus(1);
         assert userInDB != null;
         orderSave.setCustomerName(userInDB.getFirstName() + " " + userInDB.getLastName());
         orderSave.setCustomerEmail(userInDB.getEmail());
@@ -191,6 +192,12 @@ public class OrderController {
     @GetMapping("/orderList/{userId}")
     public ResponseEntity<ResponseDTO> getOrderByUser(@PathVariable("userId") String userId) {
         List<OrderEntity> orderList = orderService.searchOrder(userId);
+        return ResponseEntity.ok(new ResponseDTO(200, "get ok", orderList));
+    }
+
+    @GetMapping("/detail/{orderCode}")
+    public ResponseEntity<ResponseDTO> getOrderByCode(@PathVariable("orderCode") String orderCode) {
+        List<OrderProductEntity> orderList = orderProductService.searchOrderProducts(orderCode);
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", orderList));
     }
 }
