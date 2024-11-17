@@ -6,6 +6,7 @@ import com.example.restaurant.model.ProductEntity;
 import com.example.restaurant.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,16 +23,18 @@ import java.util.Objects;
 @Service
 public class ProductService extends BaseService<ProductEntity> {
     private final ProductRepository productRepository;
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
+    private final String filePath;
 
     /**
      * Instantiates a new Product service.
      *
      * @param productRepository the product repository
      */
-    public ProductService(ProductRepository productRepository, CategoryService categoryService) {
+    public ProductService(ProductRepository productRepository, CategoryService categoryService, @Value("${file.path}")String filePath) {
         this.productRepository = productRepository;
         this.categoryService =  categoryService;
+        this.filePath = filePath;
     }
 
     @Override
@@ -89,9 +92,9 @@ public class ProductService extends BaseService<ProductEntity> {
         if (productAvatar != null && !productAvatar.isEmpty()) {
 
             String fileName = getUniqueUploadFileName(Objects.requireNonNull(productAvatar.getOriginalFilename()));
-            String pathToAvatar = "D:/CAGL/CodeForMoney/project_restaurant/upload/product/avatar/" + fileName;
+            String pathToAvatar = filePath + fileName;
             productAvatar.transferTo(new File(pathToAvatar));
-            product.setAvatar("product/avatar/" + fileName);
+            product.setAvatar(fileName);
         }
         super.saveOrUpdate(product);
     }
@@ -110,14 +113,14 @@ public class ProductService extends BaseService<ProductEntity> {
             ProductEntity product = super.getById(p.getId());
 
             if (isEmptyUploadFile(productAvatar)) {
-                Path filePath = Paths.get("D:/CAGL/CodeForMoney/project_restaurant/upload/" + product.getAvatar());
-                if (Files.exists(filePath)) {
-                    Files.delete(filePath);
+                Path filePath1 = Paths.get(filePath + product.getAvatar());
+                if (Files.exists(filePath1)) {
+                    Files.delete(filePath1);
                 }
 
                 String fileName = getUniqueUploadFileName(Objects.requireNonNull(productAvatar.getOriginalFilename()));
-                productAvatar.transferTo(new File("D:/CAGL/CodeForMoney/project_restaurant/upload/product/avatar/" + fileName));
-                p.setAvatar("product/avatar/" + fileName);
+                productAvatar.transferTo(new File(filePath + fileName));
+                p.setAvatar(fileName);
             } else {
                 p.setAvatar(product.getAvatar());
             }
@@ -131,11 +134,10 @@ public class ProductService extends BaseService<ProductEntity> {
 
         CategoryEntity categoryEntity = categoryService.findByCategoryName(categoryName);
 
-        if (categoryEntity != null) {
-            if (categoryEntity.getId() != 0 && categoryEntity.getId() > 0) {
+        if (categoryEntity != null && categoryEntity.getId() != 0 && categoryEntity.getId() > 0) {
                 sql += " and category_id = " + categoryEntity.getId();
             }
-        }
+
 
         return super.getEntitiesByNativeSQL(sql);
     }
