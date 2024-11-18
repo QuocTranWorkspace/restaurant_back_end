@@ -2,13 +2,13 @@ package com.example.restaurant.controller;
 
 import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.model.CategoryEntity;
+import com.example.restaurant.model.ProductEntity;
 import com.example.restaurant.service.CategoryService;
+import com.example.restaurant.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * The type Category controller.
@@ -17,14 +17,16 @@ import java.util.Objects;
 @RequestMapping("/api/category")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final ProductService productService;
 
     /**
      * Instantiates a new Category controller.
      *
      * @param categoryService the category service
      */
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, ProductService productService) {
         this.categoryService = categoryService;
+        this.productService = productService;
     }
 
     /**
@@ -96,6 +98,11 @@ public class CategoryController {
     public ResponseEntity<ResponseDTO> deleteOrder(@PathVariable("categoryId") String id) {
         CategoryEntity category = categoryService.getById(Integer.parseInt(id));
         category.setStatus(false);
+        for (ProductEntity product: category.getProducts()) {
+            productService.getById(product.getId()).setStatus(false);
+            productService.saveOrUpdate(product);
+        }
+        category.setProducts(new HashSet<>());
         categoryService.saveOrUpdate(category);
         return ResponseEntity.ok(new ResponseDTO(200, "deleted", category));
     }
