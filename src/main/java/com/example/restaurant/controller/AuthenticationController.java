@@ -121,11 +121,6 @@ public class AuthenticationController {
     @GetMapping("/validateUsername/{username}")
     public ResponseEntity<ResponseDTO> validateUsername(@PathVariable String username) {
         UserEntity user = userService.findByUserName(username);
-        UserDTO userResponse = null;
-        if (Objects.nonNull(user)) {
-            userResponse = new UserDTO();
-            userService.createUserDTO(userResponse, user);
-        }
-        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(userResponse)));
+        return ResponseEntity.ok(new ResponseDTO(200, "Validating Username", !Objects.nonNull(user)));
     }
 }

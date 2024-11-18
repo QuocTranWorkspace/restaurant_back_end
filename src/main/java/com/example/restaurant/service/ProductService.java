@@ -14,6 +14,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -130,15 +131,19 @@ public class ProductService extends BaseService<ProductEntity> {
     }
 
     public List<ProductEntity> searchProduct(String categoryName) {
-        String sql = "SELECT * FROM tbl_product p WHERE 1=1";
+        System.out.println("hehe" + categoryName);
+        if (!categoryName.isEmpty()) {
+            String sql = "SELECT * FROM tbl_product p WHERE 1=1";
 
-        CategoryEntity categoryEntity = categoryService.findByCategoryName(categoryName);
+            CategoryEntity categoryEntity = categoryService.findByCategoryName(categoryName);
 
-        if (categoryEntity != null && categoryEntity.getId() != 0 && categoryEntity.getId() > 0) {
+            if (categoryEntity != null && categoryEntity.getId() != 0 && categoryEntity.getId() > 0) {
                 sql += " and category_id = " + categoryEntity.getId();
             }
 
 
-        return super.getEntitiesByNativeSQL(sql);
+            return super.getEntitiesByNativeSQL(sql);
+        }
+        else return new ArrayList<>();
     }
 }

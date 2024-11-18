@@ -156,6 +156,9 @@ public class UserService extends BaseService<UserEntity> {
         updateIfNotEmpty(userDTO.getPhone(), userEntity::setPhone);
         updateIfNotEmpty(userDTO.getAddress(), userEntity::setAddress);
 
+        for (RoleEntity roleDB: userEntity.getRoles()) {
+            userEntity.getRoles().remove(roleDB);
+        }
         for (String role : userDTO.getRoles()) {
             RoleEntity roleSave = roleService.findByRoleName(role);
             userEntity.addRole(roleSave);

@@ -52,7 +52,7 @@ file.path=<absolute-path-to-upload-folder>
 ```
 Replace `<absolute-path-to-upload-folder>` with the full path to the `upload/product/avatar` folder. For example:
 ```properties
-file.path=/Users/yourname/project/upload/product/avatar
+file.path=/Users/yourname/project/upload/product/avatar/
 ```
 
 ### 6. Update origin url (if needed)
