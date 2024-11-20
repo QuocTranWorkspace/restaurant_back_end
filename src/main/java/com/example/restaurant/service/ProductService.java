@@ -1,7 +1,6 @@
 package com.example.restaurant.service;
 
 import com.example.restaurant.model.CategoryEntity;
-import com.example.restaurant.model.PagerData;
 import com.example.restaurant.model.ProductEntity;
 import com.example.restaurant.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -31,6 +30,8 @@ public class ProductService extends BaseService<ProductEntity> {
      * Instantiates a new Product service.
      *
      * @param productRepository the product repository
+     * @param categoryService   the category service
+     * @param filePath          the file path
      */
     public ProductService(ProductRepository productRepository, CategoryService categoryService, @Value("${file.path}")String filePath) {
         this.productRepository = productRepository;
@@ -130,6 +131,12 @@ public class ProductService extends BaseService<ProductEntity> {
         super.saveOrUpdate(p);
     }
 
+    /**
+     * Search product list.
+     *
+     * @param categoryName the category name
+     * @return the list
+     */
     public List<ProductEntity> searchProduct(String categoryName) {
         System.out.println("hehe" + categoryName);
         if (!categoryName.isEmpty()) {

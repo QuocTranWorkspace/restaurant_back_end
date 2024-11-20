@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.HashSet;
@@ -12,6 +14,8 @@ import java.util.Set;
 /**
  * The type Role entity.
  */
+@Setter
+@Getter
 @Entity
 @Table(name = "tbl_role")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "roleName")
@@ -42,51 +46,6 @@ public class RoleEntity extends BaseEntity implements GrantedAuthority {
     public void deleteUser(UserEntity user) {
         users.remove(user);
         user.getRoles().remove(this);
-    }
-
-    /**
-     * Gets users.
-     *
-     * @return the users
-     */
-    public Set<UserEntity> getUsers() {
-        return users;
-    }
-
-    /**
-     * Gets role name.
-     *
-     * @return the role name
-     */
-    public String getRoleName() {
-        return roleName;
-    }
-
-    /**
-     * Sets role name.
-     *
-     * @param roleName the role name
-     */
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
-    /**
-     * Gets role description.
-     *
-     * @return the role description
-     */
-    public String getRoleDescription() {
-        return roleDescription;
-    }
-
-    /**
-     * Sets role description.
-     *
-     * @param roleDescription the role description
-     */
-    public void setRoleDescription(String roleDescription) {
-        this.roleDescription = roleDescription;
     }
 
     @Override

@@ -1,8 +1,6 @@
 package com.example.restaurant.service;
 
-import com.example.restaurant.model.OrderEntity;
 import com.example.restaurant.model.OrderProductEntity;
-import com.example.restaurant.repository.OrderProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,22 +10,18 @@ import java.util.List;
  */
 @Service
 public class OrderProductService extends BaseService<OrderProductEntity> {
-    private final OrderProductRepository orderProductRepository;
-
-    /**
-     * Instantiates a new Order product service.
-     *
-     * @param orderProductRepository the order product repository
-     */
-    public OrderProductService(OrderProductRepository orderProductRepository) {
-        this.orderProductRepository = orderProductRepository;
-    }
 
     @Override
     protected Class<OrderProductEntity> clazz() {
         return OrderProductEntity.class;
     }
 
+    /**
+     * Search order products list.
+     *
+     * @param orderId the order id
+     * @return the list
+     */
     public List<OrderProductEntity> searchOrderProducts(String orderId) {
         String sql = "SELECT * FROM tbl_order_product p WHERE 1=1";
 

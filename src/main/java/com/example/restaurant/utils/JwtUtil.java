@@ -22,7 +22,7 @@ import java.util.function.Function;
 public class JwtUtil {
 
     private final SecretKey key;
-    private final int jwtExprirationInMs;
+    private final int expirationInMs;
 
     /**
      * Instantiates a new Jwt util.
@@ -32,7 +32,7 @@ public class JwtUtil {
      */
     public JwtUtil(@Value("${jwt.secret}") String secret, @Value("${jwt.ExpirationInMs}") int jwtExprirationInMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.jwtExprirationInMs = jwtExprirationInMs;
+        this.expirationInMs = jwtExprirationInMs;
     }
 
     /**
@@ -41,7 +41,6 @@ public class JwtUtil {
      * @param user the user
      * @return the string
      */
-// TODO:
     public String generateToken(UserEntity user) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, user.getUsername());
@@ -52,7 +51,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExprirationInMs))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationInMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -106,7 +105,6 @@ public class JwtUtil {
      * @param token the token
      * @return the boolean
      */
-// TODO:
     public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }

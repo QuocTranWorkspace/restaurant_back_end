@@ -8,7 +8,10 @@ import com.example.restaurant.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * The type Category controller.
@@ -23,6 +26,7 @@ public class CategoryController {
      * Instantiates a new Category controller.
      *
      * @param categoryService the category service
+     * @param productService  the product service
      */
     public CategoryController(CategoryService categoryService, ProductService productService) {
         this.categoryService = categoryService;

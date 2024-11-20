@@ -13,10 +13,8 @@ import com.example.restaurant.service.ProductService;
 import com.example.restaurant.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -39,7 +37,10 @@ public class OrderController {
     /**
      * Instantiates a new Order controller.
      *
-     * @param orderService the order service
+     * @param orderService        the order service
+     * @param userService         the user service
+     * @param productService      the product service
+     * @param orderProductService the order product service
      */
     public OrderController(OrderService orderService, UserService userService, ProductService productService, OrderProductService orderProductService) {
         this.orderService = orderService;
@@ -133,6 +134,14 @@ public class OrderController {
         return ResponseEntity.ok(new ResponseDTO(200, "deleted", orderResponse));
     }
 
+    /**
+     * Create order 1 response entity.
+     *
+     * @param user  the user
+     * @param order the order
+     * @return the response entity
+     * @throws JsonProcessingException the json processing exception
+     */
     @PostMapping(value = "/checkout")
     public ResponseEntity<ResponseDTO> createOrder1(@RequestPart("user") String user,
                                                     @RequestPart("order") String order) throws JsonProcessingException {
@@ -189,12 +198,24 @@ public class OrderController {
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", orderInDB));
     }
 
+    /**
+     * Gets order by user.
+     *
+     * @param userId the user id
+     * @return the order by user
+     */
     @GetMapping("/orderList/{userId}")
     public ResponseEntity<ResponseDTO> getOrderByUser(@PathVariable("userId") String userId) {
         List<OrderEntity> orderList = orderService.searchOrder(userId);
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", orderList));
     }
 
+    /**
+     * Gets order by code.
+     *
+     * @param orderCode the order code
+     * @return the order by code
+     */
     @GetMapping("/detail/{orderCode}")
     public ResponseEntity<ResponseDTO> getOrderByCode(@PathVariable("orderCode") String orderCode) {
         List<OrderProductEntity> orderList = orderProductService.searchOrderProducts(orderCode);

@@ -77,11 +77,11 @@ public class SecurityConfig {
     }
 
     /**
-     * Service configuration and password encode algorithm
+     * Authentication manager authentication manager.
      *
      * @param http the http
      * @return the authentication manager
-     * @throws Exception e
+     * @throws Exception the exception
      */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {

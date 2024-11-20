@@ -1,8 +1,6 @@
 package com.example.restaurant.service;
 
-import com.example.restaurant.model.CategoryEntity;
 import com.example.restaurant.model.OrderEntity;
-import com.example.restaurant.model.ProductEntity;
 import com.example.restaurant.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +37,12 @@ public class OrderService extends BaseService<OrderEntity> {
         return orderRepository.findByCode(code);
     }
 
+    /**
+     * Find all by code list.
+     *
+     * @param code the code
+     * @return the list
+     */
     public List<OrderEntity> findAllByCode(String code) {
         return orderRepository.findAllByCode(code);
     }
@@ -62,6 +66,12 @@ public class OrderService extends BaseService<OrderEntity> {
         return orderGet;
     }
 
+    /**
+     * Search order list.
+     *
+     * @param userId the user id
+     * @return the list
+     */
     public List<OrderEntity> searchOrder(String userId) {
         String sql = "SELECT * FROM tbl_order p WHERE 1=1";
 

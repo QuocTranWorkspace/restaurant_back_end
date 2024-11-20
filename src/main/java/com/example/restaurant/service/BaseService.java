@@ -1,7 +1,6 @@
 package com.example.restaurant.service;
 
 import com.example.restaurant.model.BaseEntity;
-import com.example.restaurant.model.PagerData;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -36,26 +35,24 @@ public abstract class BaseService<E extends BaseEntity> {
     protected abstract Class<E> clazz();
 
     /**
-     * Execute save or update the entity
+     * Save or update.
      *
-     * @param entity entity
-     * @return entity e
+     * @param entity the entity
      */
     @Transactional
-    public E saveOrUpdate(E entity) {
+    public void saveOrUpdate(E entity) {
         if (entity.getId() == null || entity.getId() <= 0) {
             entity.setCreatedDate(new Date());
-            entityManager.persist(entity); // Create
-            return entity;
+            entityManager.persist(entity);
         } else {
-            return entityManager.merge(entity); // Update
+            entityManager.merge(entity);
         }
     }
 
     /**
-     * Soft delete the entity
+     * Delete.
      *
-     * @param entity entity
+     * @param entity the entity
      */
     @Transactional
     public void delete(E entity) {
@@ -64,74 +61,24 @@ public abstract class BaseService<E extends BaseEntity> {
     }
 
     /**
-     * Get record in the database with primary key
+     * Gets by id.
      *
-     * @param primaryKey id
-     * @return E entity
+     * @param primaryKey the primary key
+     * @return the by id
      */
     public E getById(int primaryKey) {
         return entityManager.find(clazz(), primaryKey);
     }
 
     /**
-     * Get all the records in the database
+     * Find all list.
      *
-     * @return List of records
+     * @return the list
      */
     @SuppressWarnings("unchecked")
     public List<E> findAll() {
         Table tbl = clazz().getAnnotation(Table.class);
         return entityManager.createNativeQuery("SELECT * FROM " + tbl.name(), clazz()).getResultList();
-    }
-
-    /**
-     * Execute the query statement with paging data
-     *
-     * @param sql  query_string
-     * @param page page
-     * @return result entities by native sql
-     */
-    @SuppressWarnings("unchecked")
-    public PagerData<E> getEntitiesByNativeSQL(String sql, int page) {
-        if (page <= 0) {
-            throw new IllegalAccessError("page must be greater or equal than 0");
-        }
-
-        PagerData<E> result = new PagerData<>();
-
-        try {
-            Query query = entityManager.createNativeQuery(sql, clazz());
-            /*
-             * Incase of pagination then the return result include page and current data
-             */
-            result.setCurrentPage(page);
-            result.setTotalItems(query.getResultList().size());
-            result.setSizeOfPage(8);
-
-            query.setFirstResult((page - 1) * 8);
-            query.setMaxResults(8);
-
-            result.setData(query.getResultList());
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
-
-        return result;
-    }
-
-    /**
-     * Gets entity by native sql.
-     *
-     * @param sql the sql
-     * @return the entity by native sql
-     */
-    public E getEntityByNativeSQL(String sql) {
-        try {
-            return getEntitiesByNativeSQL(sql).get(0);
-        } catch (Exception e) {
-            log.info(e.getMessage());
-        }
-        return null;
     }
 
     /**

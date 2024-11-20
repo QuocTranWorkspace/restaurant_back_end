@@ -29,7 +29,8 @@ public class ProductController {
     /**
      * Instantiates a new Product controller.
      *
-     * @param productService the product service
+     * @param productService  the product service
+     * @param categoryService the category service
      */
     public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
@@ -86,9 +87,9 @@ public class ProductController {
     /**
      * Create product response entity.
      *
-     * @param id      the id
-     * @param avatar  the avatar
-     * @param product the product
+     * @param categoryId the category id
+     * @param avatar     the avatar
+     * @param product    the product
      * @return the response entity
      * @throws JsonProcessingException the json processing exception
      */
@@ -120,6 +121,12 @@ public class ProductController {
         return ResponseEntity.ok(new ResponseDTO(200, "deleted", productResponse));
     }
 
+    /**
+     * Gets filtered product list.
+     *
+     * @param category the category
+     * @return the filtered product list
+     */
     @GetMapping("/productList/{categoryName}")
     public ResponseEntity<ResponseDTO> getFilteredProductList(@PathVariable("categoryName") String category) {
         List<ProductEntity> productList = productService.searchProduct(category);

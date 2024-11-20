@@ -128,6 +128,13 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDTO(200, "deleted", userResponse));
     }
 
+    /**
+     * Update profile response entity.
+     *
+     * @param id   the id
+     * @param user the user
+     * @return the response entity
+     */
     @PostMapping("/profile/{userId}")
     public ResponseEntity<ResponseDTO> updateProfile(@PathVariable("userId") String id, @RequestBody UserEntity user) {
         UserEntity userUpdate = userService.getById(Integer.parseInt(id));

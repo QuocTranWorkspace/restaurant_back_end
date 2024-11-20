@@ -1,8 +1,13 @@
 package com.example.restaurant.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * The type Response dto.
  */
+@Setter
+@Getter
 public class ResponseDTO {
     private int status;
     private String message;
@@ -21,57 +26,4 @@ public class ResponseDTO {
         this.data = data;
     }
 
-    /**
-     * Gets status.
-     *
-     * @return the status
-     */
-    public int getStatus() {
-        return status;
-    }
-
-    /**
-     * Sets status.
-     *
-     * @param status the status
-     */
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    /**
-     * Gets message.
-     *
-     * @return the message
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * Sets message.
-     *
-     * @param message the message
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    /**
-     * Gets data.
-     *
-     * @return the data
-     */
-    public Object getData() {
-        return data;
-    }
-
-    /**
-     * Sets data.
-     *
-     * @param data the data
-     */
-    public void setData(Object data) {
-        this.data = data;
-    }
 }

@@ -3,6 +3,8 @@ package com.example.restaurant.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +17,8 @@ import java.util.Set;
 /**
  * The type User entity.
  */
+@Setter
+@Getter
 @Entity
 @Table(name = "tbl_user")
 public class UserEntity extends BaseEntity implements UserDetails {
@@ -42,15 +46,6 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private String address;
 
     /**
-     * Gets serial version uid.
-     *
-     * @return the serial version uid
-     */
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    /**
      * Add role.
      *
      * @param role the role
@@ -71,93 +66,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
     }
 
     /**
-     * Gets roles.
-     *
-     * @return the roles
-     */
-    public Set<RoleEntity> getRoles() {
-        return roles;
-    }
-
-    /**
-     * Sets user name.
-     *
-     * @param userName the user name
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    /**
-     * Gets first name.
-     *
-     * @return the first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Sets first name.
-     *
-     * @param firstName the first name
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Gets last name.
-     *
-     * @return the last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Sets last name.
-     *
-     * @param lastName the last name
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
      * Gets email.
      *
      * @return the email
      */
     public @Email(message = "Invalid Email") String getEmail() {
         return email;
-    }
-
-    /**
-     * Sets email.
-     *
-     * @param email the email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * Gets phone.
-     *
-     * @return the phone
-     */
-    public String getPhone() {
-        return phone;
-    }
-
-    /**
-     * Sets phone.
-     *
-     * @param phone the phone
-     */
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     // User detail for authentication
@@ -169,15 +83,6 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Override
     public String getPassword() {
         return this.password;
-    }
-
-    /**
-     * Sets password.
-     *
-     * @param password the password
-     */
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     @Override
@@ -203,23 +108,5 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
-    }
-
-    /**
-     * Gets address.
-     *
-     * @return the address
-     */
-    public String getAddress() {
-        return address;
-    }
-
-    /**
-     * Sets address.
-     *
-     * @param address the address
-     */
-    public void setAddress(String address) {
-        this.address = address;
     }
 }

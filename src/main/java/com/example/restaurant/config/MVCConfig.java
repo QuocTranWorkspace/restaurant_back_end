@@ -15,8 +15,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MVCConfig implements WebMvcConfigurer {
     private final String filePath;
     private final String origins;
+
     /**
      * Instantiates a new Mvc config.
+     *
+     * @param filePath the file path
+     * @param origins  the origins
      */
     public MVCConfig(@Value("${file.path}")String filePath, @Value("${origins.url}")String origins) {
         super();
