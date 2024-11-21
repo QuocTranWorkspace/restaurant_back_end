@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends BaseRepository<UserEntity> {
     /**
-     * Find by user name user entity.
+     * Find by username user entity.
      *
      * @param username the username
      * @return the user entity
      */
     UserEntity findByUserName(String username);
+
+    UserEntity findByEmail(String email);
 }

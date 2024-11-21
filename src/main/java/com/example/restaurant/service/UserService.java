@@ -59,6 +59,10 @@ public class UserService extends BaseService<UserEntity> {
         return userRepository.findByUserName(userName);
     }
 
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     /**
      * Register response dto.
      *

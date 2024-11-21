@@ -36,8 +36,9 @@ public class OrderEntity extends BaseEntity {
     @Column(name = "customer_email")
     private String customerEmail;
 
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
 
     @Column(name = "delivery_status")
     private int deliveryStatus;

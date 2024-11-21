@@ -112,8 +112,12 @@ public class OrderController {
         OrderEntity orderEntity = new OrderEntity();
         OrderEntity orderResponse = null;
         if (Objects.nonNull(order)) {
-            orderResponse = orderService.bindingOrderData(orderEntity, order);
-            orderService.saveOrUpdate(orderEntity);
+            UserEntity user = userService.findByEmail(order.getCustomerEmail());
+            if (Objects.nonNull(user)) {
+                orderResponse = orderService.bindingOrderData(orderEntity, order);
+                orderEntity.setUser(user);
+                orderService.saveOrUpdate(orderEntity);
+            }
         }
         return ResponseEntity.ok(new ResponseDTO(200, "update ok", orderResponse));
     }
@@ -180,7 +184,7 @@ public class OrderController {
         orderSave.setCustomerEmail(userInDB.getEmail());
         orderSave.setCustomerPhone(userInDB.getPhone());
         orderSave.setCustomerAddress(userInDB.getAddress());
-        orderSave.setUserId(userInDB.getId());
+        orderSave.setUser(userInDB);
 
         orderService.saveOrUpdate(orderSave);
 

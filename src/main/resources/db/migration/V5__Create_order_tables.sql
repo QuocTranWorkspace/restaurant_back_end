@@ -1,7 +1,7 @@
 CREATE TABLE tbl_order (
     id INT NOT NULL UNIQUE AUTO_INCREMENT PRIMARY KEY,
     code VARCHAR(255) NOT NULL UNIQUE,
-    total_price DECIMAL NOT NULL,
+    total_price DECIMAL(13,2) NOT NULL,
     customer_name VARCHAR(255) NOT NULL,
     user_id INT NOT NULL,
     customer_phone VARCHAR(255) NOT NULL,
