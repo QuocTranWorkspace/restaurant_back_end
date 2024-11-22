@@ -50,9 +50,9 @@ public class UserService extends BaseService<UserEntity> {
     }
 
     /**
-     * Find by user name user entity.
+     * Find by username user entity.
      *
-     * @param userName the user name
+     * @param userName the username
      * @return the user entity
      */
     public UserEntity findByUserName(String userName) {
@@ -66,7 +66,7 @@ public class UserService extends BaseService<UserEntity> {
     /**
      * Register response dto.
      *
-     * @param signUpData the sign up data
+     * @param signUpData the sign-up data
      * @param roleName   the role name
      * @return the response dto
      */

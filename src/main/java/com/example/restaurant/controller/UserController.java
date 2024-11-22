@@ -82,6 +82,9 @@ public class UserController {
         UserDTO userResponse = null;
         if (Objects.nonNull(userUpdate) && !Objects.isNull(user)) {
             userResponse = userService.bindingUserData(userUpdate, user);
+            if (user.getPassword().trim().isEmpty()) {
+                userUpdate.setPassword(new BCryptPasswordEncoder(4).encode(user.getPassword()));
+            }
             userUpdate.setUpdatedDate(new Date());
             userService.saveOrUpdate(userUpdate);
         }
