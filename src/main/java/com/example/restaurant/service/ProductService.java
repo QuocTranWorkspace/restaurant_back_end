@@ -138,9 +138,8 @@ public class ProductService extends BaseService<ProductEntity> {
      * @return the list
      */
     public List<ProductEntity> searchProduct(String categoryName) {
-        System.out.println("hehe" + categoryName);
         if (!categoryName.isEmpty()) {
-            String sql = "SELECT * FROM tbl_product p WHERE 1=1";
+            String sql = "SELECT * FROM tbl_product p WHERE 1=1 and status = 1";
 
             CategoryEntity categoryEntity = categoryService.findByCategoryName(categoryName);
 

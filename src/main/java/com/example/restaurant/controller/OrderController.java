@@ -180,10 +180,10 @@ public class OrderController {
         orderSave.setTotalPrice(tempTotal);
         orderSave.setDeliveryStatus(1);
         assert userInDB != null;
-        orderSave.setCustomerName(userInDB.getFirstName() + " " + userInDB.getLastName());
-        orderSave.setCustomerEmail(userInDB.getEmail());
-        orderSave.setCustomerPhone(userInDB.getPhone());
-        orderSave.setCustomerAddress(userInDB.getAddress());
+        orderSave.setCustomerName(userEntity.getFirstName() + " " + userEntity.getLastName());
+        orderSave.setCustomerEmail(userEntity.getEmail());
+        orderSave.setCustomerPhone(userEntity.getPhone());
+        orderSave.setCustomerAddress(userEntity.getAddress());
         orderSave.setUser(userInDB);
 
         orderService.saveOrUpdate(orderSave);

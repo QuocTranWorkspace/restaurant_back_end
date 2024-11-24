@@ -1,6 +1,8 @@
 package com.example.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -76,6 +78,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     // User detail for authentication
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.getRoles();
     }

@@ -1,10 +1,12 @@
 package com.example.restaurant.service;
 
 import com.example.restaurant.model.OrderEntity;
+import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The type Order service.
@@ -12,14 +14,16 @@ import java.util.List;
 @Service
 public class OrderService extends BaseService<OrderEntity> {
     private final OrderRepository orderRepository;
+    private final UserService userService;
 
     /**
      * Instantiates a new Order service.
      *
      * @param orderRepository the order repository
      */
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, UserService userService) {
         this.orderRepository = orderRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -55,12 +59,19 @@ public class OrderService extends BaseService<OrderEntity> {
      * @return the order entity
      */
     public OrderEntity bindingOrderData(OrderEntity orderUpdate, OrderEntity orderGet) {
+        int userId = orderGet.getUser().getId();
+        UserEntity user = userService.getById(userId);
         updateIfNotEmpty(orderGet.getCode(), orderUpdate::setCode);
         orderUpdate.setTotalPrice(orderGet.getTotalPrice());
+        if (Objects.nonNull(user) && Boolean.TRUE.equals(user.getStatus())) {
+            orderUpdate.setUser(user);
+        }
         updateIfNotEmpty(orderGet.getCustomerName(), orderUpdate::setCustomerName);
         updateIfNotEmpty(orderGet.getCustomerEmail(), orderUpdate::setCustomerEmail);
         updateIfNotEmpty(orderGet.getCustomerPhone(), orderUpdate::setCustomerPhone);
         updateIfNotEmpty(orderGet.getCustomerAddress(), orderUpdate::setCustomerAddress);
+        System.out.println(orderGet.getCustomerAddress());
+        System.out.println(orderUpdate.getCustomerAddress());
         orderUpdate.setDeliveryStatus(orderGet.getDeliveryStatus());
 
         return orderGet;
