@@ -10,7 +10,11 @@ import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.model.UserRole;
 import com.example.restaurant.repository.UserRepository;
 import com.example.restaurant.utils.JwtUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.SneakyThrows;
+import org.apache.catalina.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +31,7 @@ public class UserService extends BaseService<UserEntity> {
     private final UserRoleService userRoleService;
     private final RoleService roleService;
     private final JwtUtil jwtUtil;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     /**
      * Instantiates a new User service.
@@ -152,7 +157,8 @@ public class UserService extends BaseService<UserEntity> {
      * @param userDTO    the user dto
      * @return the user dto
      */
-    public UserDTO bindingUserData(UserEntity userEntity, UserDTO userDTO) {
+    @SneakyThrows
+    public UserDTO bindingUserData(UserEntity userEntity, UserDTO userDTO){
         updateIfNotEmpty(userDTO.getUserName(), userEntity::setUserName);
         updateIfNotEmpty(userDTO.getFirstName(), userEntity::setFirstName);
         updateIfNotEmpty(userDTO.getLastName(), userEntity::setLastName);
@@ -161,11 +167,22 @@ public class UserService extends BaseService<UserEntity> {
         updateIfNotEmpty(userDTO.getAddress(), userEntity::setAddress);
 
         for (RoleEntity roleDB: userEntity.getRoles()) {
-            userEntity.getRoles().remove(roleDB);
+            UserRole userRole = userRoleService.findByUserId(roleDB.getId());
+            userRoleService.delete(userRole);
+            userEntity.deleteRole(roleDB);
+            roleDB.deleteUser(userEntity);
+            roleService.saveOrUpdate(roleDB);
         }
         for (String role : userDTO.getRoles()) {
-            RoleEntity roleSave = roleService.findByRoleName(role);
+            RoleEntity roleSave = objectMapper.readValue(role, RoleEntity.class);
             userEntity.addRole(roleSave);
+            UserRole userRole = new UserRole();
+            userRole.setUserId(userEntity.getId());
+            userRole.setRoleId(roleSave.getId());
+            userEntity.addRole(roleSave);
+            roleSave.addUser(userEntity);
+            roleService.saveOrUpdate(roleSave);
+            userRoleService.saveOrUpdate(userRole);
         }
 
         return userDTO;

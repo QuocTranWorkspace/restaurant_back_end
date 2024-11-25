@@ -49,6 +49,7 @@ public class RoleEntity extends BaseEntity implements GrantedAuthority {
     }
 
     @Override
+    @JsonIgnore
     public String getAuthority() {
         return this.getRoleName();
     }

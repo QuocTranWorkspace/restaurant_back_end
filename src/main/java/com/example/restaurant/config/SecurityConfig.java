@@ -5,6 +5,7 @@ import com.example.restaurant.utils.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -54,14 +55,18 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        // Allow all requests to home view
-                        .requestMatchers("/api/auth/**", "/api/**", "/home")
+                        // Allow all requests to home view & preflight
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/user/**", "/api/category/**", "/api/order/**", "/api/product/**", "/home")
                         .permitAll()
                         // Allow all static resources requests
                         .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
                         .permitAll()
-                        .requestMatchers("/admin/**")
-                        .hasAnyRole("ADMIN"))
+                        .requestMatchers("/api/admin/category/**", "/api/admin/order/**", "/api/admin/product/**")
+                        .hasAnyRole("STAFF", "ADMIN")
+                        .requestMatchers("/api/admin/user/**", "/api/admin/role/**")
+                        .hasAnyRole("ADMIN")
+                        .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailService),
                         UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -77,7 +82,7 @@ public class SecurityConfig {
     }
 
     /**
-     * Authentication manager authentication manager.
+     * Authentication manager.
      *
      * @param http the http
      * @return the authentication manager

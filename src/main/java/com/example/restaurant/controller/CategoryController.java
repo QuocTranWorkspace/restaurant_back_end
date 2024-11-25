@@ -2,16 +2,14 @@ package com.example.restaurant.controller;
 
 import com.example.restaurant.dto.ResponseDTO;
 import com.example.restaurant.model.CategoryEntity;
-import com.example.restaurant.model.ProductEntity;
 import com.example.restaurant.service.CategoryService;
-import com.example.restaurant.service.ProductService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The type Category controller.
@@ -20,17 +18,14 @@ import java.util.Objects;
 @RequestMapping("/api/category")
 public class CategoryController {
     private final CategoryService categoryService;
-    private final ProductService productService;
 
     /**
      * Instantiates a new Category controller.
      *
      * @param categoryService the category service
-     * @param productService  the product service
      */
-    public CategoryController(CategoryService categoryService, ProductService productService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
-        this.productService = productService;
     }
 
     /**
@@ -54,60 +49,5 @@ public class CategoryController {
     public ResponseEntity<ResponseDTO> getCategory(@PathVariable("categoryId") String id) {
         CategoryEntity category = categoryService.getById(Integer.parseInt(id));
         return ResponseEntity.ok(new ResponseDTO(200, "get ok", category));
-    }
-
-    /**
-     * Update category response entity.
-     *
-     * @param id       the id
-     * @param category the category
-     * @return the response entity
-     */
-    @PostMapping("/{categoryId}")
-    public ResponseEntity<ResponseDTO> updateCategory(@PathVariable("categoryId") String id, @RequestBody CategoryEntity category) {
-        CategoryEntity categorySave = categoryService.getById(Integer.parseInt(id));
-        if (Objects.nonNull(categorySave) && !Objects.isNull(category)) {
-            categorySave.setCategoryName(category.getCategoryName());
-            categorySave.setCategoryDescription(category.getCategoryDescription());
-            categorySave.setUpdatedDate(new Date());
-            categoryService.saveOrUpdate(categorySave);
-        }
-        return ResponseEntity.ok(new ResponseDTO(200, "update ok", categorySave));
-    }
-
-    /**
-     * Create category response entity.
-     *
-     * @param category the category
-     * @return the response entity
-     */
-    @PostMapping("/addCategory")
-    public ResponseEntity<ResponseDTO> createCategory(@RequestBody CategoryEntity category) {
-        CategoryEntity categoryEntity = new CategoryEntity();
-        if (Objects.nonNull(category)) {
-            categoryEntity.setCategoryName(category.getCategoryName());
-            categoryEntity.setCategoryDescription(category.getCategoryDescription());
-            categoryService.saveOrUpdate(categoryEntity);
-        }
-        return ResponseEntity.ok(new ResponseDTO(200, "update ok", categoryEntity));
-    }
-
-    /**
-     * Delete order response entity.
-     *
-     * @param id the id
-     * @return the response entity
-     */
-    @PostMapping("/deleteCategory/{categoryId}")
-    public ResponseEntity<ResponseDTO> deleteOrder(@PathVariable("categoryId") String id) {
-        CategoryEntity category = categoryService.getById(Integer.parseInt(id));
-        category.setStatus(false);
-        for (ProductEntity product: category.getProducts()) {
-            productService.getById(product.getId()).setStatus(false);
-            productService.saveOrUpdate(product);
-        }
-        category.setProducts(new HashSet<>());
-        categoryService.saveOrUpdate(category);
-        return ResponseEntity.ok(new ResponseDTO(200, "deleted", category));
     }
 }

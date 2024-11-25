@@ -28,11 +28,11 @@ public class JwtUtil {
      * Instantiates a new Jwt util.
      *
      * @param secret             the secret
-     * @param jwtExprirationInMs the jwt expriration in ms
+     * @param jwtExpirationInMs the jwt Expiration in ms
      */
-    public JwtUtil(@Value("${jwt.secret}") String secret, @Value("${jwt.ExpirationInMs}") int jwtExprirationInMs) {
+    public JwtUtil(@Value("${jwt.secret}") String secret, @Value("${jwt.ExpirationInMs}") int jwtExpirationInMs) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes());
-        this.expirationInMs = jwtExprirationInMs;
+        this.expirationInMs = jwtExpirationInMs;
     }
 
     /**

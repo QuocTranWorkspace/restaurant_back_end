@@ -6,6 +6,8 @@ import com.example.restaurant.dto.user.SignUpDTO;
 import com.example.restaurant.dto.user.UserDTO;
 import com.example.restaurant.model.UserEntity;
 import com.example.restaurant.service.UserService;
+import org.aspectj.bridge.MessageUtil;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,7 +75,6 @@ public class AuthenticationController {
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(reqUser.getUsername(),
                                 reqUser.getPassword(), user.getAuthorities()));
-
                 response = userService.login(reqUser);
 
                 return ResponseEntity.ok(response);

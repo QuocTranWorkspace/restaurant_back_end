@@ -70,8 +70,6 @@ public class OrderService extends BaseService<OrderEntity> {
         updateIfNotEmpty(orderGet.getCustomerEmail(), orderUpdate::setCustomerEmail);
         updateIfNotEmpty(orderGet.getCustomerPhone(), orderUpdate::setCustomerPhone);
         updateIfNotEmpty(orderGet.getCustomerAddress(), orderUpdate::setCustomerAddress);
-        System.out.println(orderGet.getCustomerAddress());
-        System.out.println(orderUpdate.getCustomerAddress());
         orderUpdate.setDeliveryStatus(orderGet.getDeliveryStatus());
 
         return orderGet;

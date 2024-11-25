@@ -9,12 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.io.Serial;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The type User entity.
@@ -80,7 +82,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.getRoles();
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getRoleName()))
+                .collect(Collectors.toList());
     }
 
     @Override
