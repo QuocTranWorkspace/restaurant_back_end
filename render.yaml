@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: restaurant-backend
+    runtime: java
+    plan: free
+    buildCommand: ./mvnw package -DskipTests
+    startCommand: java -jar target/*.jar
+    envVars:
+      - key: DATABASE_HOST
+        sync: false
+      - key: DATABASE_PORT
+        sync: false
+      - key: DATABASE_NAME
+        sync: false
+      - key: DATABASE_USERNAME
+        sync: false
+      - key: DATABASE_PASSWORD
+        sync: false
+      - key: B2_ACCESS_KEY
+        sync: false
+      - key: B2_SECRET_KEY
+        sync: false
+      - key: B2_ENDPOINT
+        sync: false
+      - key: B2_BUCKET
+        sync: false
+      - key: B2_PUBLIC_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: JAVA_OPTS
+        value: "-XX:+UseContainerSupport -Xmx512m"
