@@ -38,9 +38,6 @@ public class B2StorageService implements StorageService {
     @Value("${cloud.b2.product-prefix:product/avatar/}")
     private String productPrefix;
 
-    @Value("${cloud.b2.public-url}")
-    private String publicBaseUrl;
-
     public B2StorageService(
             @Value("${cloud.b2.access-key}") String accessKey,
             @Value("${cloud.b2.secret-key}") String secretKey,
