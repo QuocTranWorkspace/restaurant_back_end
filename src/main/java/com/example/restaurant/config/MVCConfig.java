@@ -15,29 +15,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @EnableWebMvc
 public class MVCConfig implements WebMvcConfigurer {
     private final String filePath;
-    private final String origins;
 
     /**
      * Instantiates a new Mvc config.
      *
      * @param filePath the file path
-     * @param origins  the origins
      */
-    public MVCConfig(@Value("${file.path}")String filePath, @Value("${origins.url}")String origins) {
+    public MVCConfig(@Value("${file.path}")String filePath) {
         super();
         this.filePath = filePath;
-        this.origins = origins;
-    }
-
-    @SuppressWarnings("null")
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry
-                .addMapping("/**")
-                .allowedOrigins(origins)
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowCredentials(true)
-                .allowedHeaders("Content-Type", "Authorization", "X-Requested-With", "Accept", "Origin");
     }
 
     @Override
