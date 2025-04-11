@@ -2,6 +2,7 @@ package com.example.restaurant.config;
 
 import com.example.restaurant.service.UserDetailServiceImpl;
 import com.example.restaurant.utils.JwtUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -36,6 +37,7 @@ public class SecurityConfig {
      */
     private final UserDetailServiceImpl userDetailService;
     private final JwtUtil jwtUtil;
+    private final String allowedOrigins;
 
     /**
      * Instantiates a new Security config.
@@ -44,9 +46,10 @@ public class SecurityConfig {
      * @param jwtUtil           the jwt util
      */
 // @Autowired
-    public SecurityConfig(@Lazy UserDetailServiceImpl userDetailService, JwtUtil jwtUtil) {
+    public SecurityConfig(@Lazy UserDetailServiceImpl userDetailService, JwtUtil jwtUtil, @Value("${origins.url}") String allowedOrigins) {
         this.userDetailService = userDetailService;
         this.jwtUtil = jwtUtil;
+        this.allowedOrigins = allowedOrigins;
     }
 
     /**
@@ -70,9 +73,9 @@ public class SecurityConfig {
                         .requestMatchers("/css/**", "/js/**", "/upload/**", "/img/**")
                         .permitAll()
                         .requestMatchers("/api/admin/category/**", "/api/admin/order/**", "/api/admin/product/**")
-                        .hasAnyAuthority("STAFF", "ADMIN")
+                        .hasAnyRole("STAFF", "ADMIN")
                         .requestMatchers("/api/admin/user/**", "/api/admin/role/**")
-                        .hasAnyAuthority("ADMIN")
+                        .hasAnyRole("ADMIN")
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userDetailService),
                         UsernamePasswordAuthenticationFilter.class)
